@@ -8,7 +8,9 @@ type GetRoute53ZoneID = (zoneName: string) => Promise<string | undefined>
 const getRoute53ZoneID: GetRoute53ZoneID = async (zoneName) => {
   try {
     const hostedZonesByName = await route53.listHostedZonesByName({ DNSName: zoneName }).promise()
-    const hostedZoneID = hostedZonesByName.HostedZoneId
+    const hostedZoneID = hostedZonesByName.HostedZones.filter((zone) => {
+      zone.Name === zoneName
+    })[0].Id
 
     console.log('ZONES', hostedZonesByName)
 
