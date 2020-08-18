@@ -16,7 +16,7 @@ const getRoute53ZoneID: GetRoute53ZoneID = async (zoneName) => {
       console.log('zoneName', zoneName)
     })
 
-    const hostedZoneID = hostedZonesByName.HostedZones.filter((zone) => zone.Name === zoneName)[0].Id
+    const hostedZoneID = hostedZonesByName.HostedZones.filter((zone) => zone.Name === `${zoneName}.`)[0].Id
 
     if (!hostedZoneID) {
       core.setFailed('No hosted zone exists for the given Route53ZoneName')
