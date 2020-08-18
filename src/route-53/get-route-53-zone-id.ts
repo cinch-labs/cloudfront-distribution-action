@@ -7,8 +7,10 @@ type GetRoute53ZoneID = (zoneName: string) => Promise<string | undefined>
 
 const getRoute53ZoneID: GetRoute53ZoneID = async (zoneName) => {
   try {
-    const hostedZoneByName = await route53.listHostedZonesByName({ DNSName: zoneName }).promise()
-    const hostedZoneID = hostedZoneByName.HostedZoneId
+    const hostedZonesByName = await route53.listHostedZonesByName({ DNSName: zoneName }).promise()
+    const hostedZoneID = hostedZonesByName.HostedZoneId
+
+    console.log('ZONES', hostedZonesByName)
 
     if (!hostedZoneID) {
       core.setFailed('No hosted zone exists for the given Route53ZoneName')
