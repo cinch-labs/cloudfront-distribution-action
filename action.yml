@@ -1,0 +1,25 @@
+name: 'Cloudfront distribution deploy'
+description: 'Deploys a cloudfront distribution with the given parameters'
+author: 'cinch-labs'
+inputs:
+  cloudformation-stack-name:
+    required: true
+    description: 'The cloudformation stack for the deployment'
+  lambda-stack-name:
+    required: true
+    description: 'The stack name of the rewrite/auth lambda for the deployment'
+  route-53-zone-name:
+    required: true
+    description: 'The Route 53 zone name for the deployment'
+  s3-bucket-name:
+    required: true
+    description: 'The name of the S3 bucket where the site bundle will be deployed to'
+  subdirectory-name:
+    required: true
+    description: 'The name of the subdirectory in S3 bucket where the site bundle will be deployed to'
+  aws-region:
+    required: true
+    description: 'The AWS region where cloudformation stack will be deployed to'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

@@ -1,0 +1,10 @@
+version: 1
+
+merge:
+  trigger:
+    labels: ['dependencies']
+  method: squash
+
+update:
+  trigger:
+    labels: ['dependencies']

@@ -1,0 +1,61 @@
+name: 'Pull Request'
+
+on: push
+
+jobs:
+  quality-checks:
+    name: Quality Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Restore node_modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: 'node_modules'
+          key: v1-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm install
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+
+      - name: Lint
+        run: npm run lint:check
+
+      - name: Prettier Check
+        run: npm run prettier:check
+
+      - name: Compile TypeScript
+        run: npm run build
+
+      - name: Package action
+        run: npm run package
+
+      - name: Unit tests
+        run: npm run test
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_DEV_DEPLOY_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_DEV_DEPLOY_ACCESS_SECRET }}
+          aws-region: eu-west-1
+
+      - name: Creating a cloudfront distribution
+        uses: ./
+        with:
+          cloudformation-stack-name: github-action-integration-test
+          lambda-stack-name: feature-preview-auth-lambda
+          route-53-zone-name: cypress-info-on-pr.feature.aws.cinch.co.uk
+          s3-bucket-name: cinch-feature-preview-artifacts
+          subdirectory-name: github-action-integration-test
+          aws-region: eu-west-1
