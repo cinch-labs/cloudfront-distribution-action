@@ -2,7 +2,7 @@
   "name": "cloudfront-distribution",
   "version": "1.1.0",
   "private": true,
-  "description": "GitHub action to update subdomains on the identity service",
+  "description": "GitHub action to create cloudfront distributions",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
