@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import { CloudFormation } from 'aws-sdk'
 
-const cloudFormation = new CloudFormation()
+const cloudFormation = new CloudFormation({ region: 'us-east-1' })
 
 type GetLambdaARN = (lambdaStackName: string) => Promise<string | undefined>
 
