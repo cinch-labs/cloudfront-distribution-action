@@ -27,17 +27,15 @@ const createStack: CreateStack = async (
   oaiARN,
 ) => {
   try {
-    console.log(
-      region,
-      stackName,
-      bucketName,
-      subdirectoryName,
-      lambdaARN,
-      route53ZoneID,
-      route53ZoneName,
-      certificateARN,
-      oaiARN,
-    )
+    console.log('region', region)
+    console.log('stackName', stackName)
+    console.log('bucketName', bucketName)
+    console.log('subdirectoryName', subdirectoryName)
+    console.log('lambdaARN', lambdaARN)
+    console.log('route53ZoneID', route53ZoneID)
+    console.log('route53ZoneName', route53ZoneName)
+    console.log('certificateARN', certificateARN)
+    console.log('oaiARN', oaiARN)
   } catch (error) {
     core.setFailed(error)
   }
