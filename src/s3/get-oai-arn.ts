@@ -9,9 +9,13 @@ const getOaiArn: GetOaiArn = async (bucketName) => {
   try {
     const bucketPolicy = await route53.getBucketPolicy({ Bucket: bucketName }).promise()
 
-    console.log('bucketPolicy.Policy', bucketPolicy.Policy)
+    if (!bucketPolicy.Policy) {
+      throw new Error('No policy exists for the specified S3 bucket')
+    }
 
-    return ''
+    const arn = JSON.parse(bucketPolicy.Policy).Statement[0].Principal.AWS
+
+    return arn
   } catch (error) {
     core.setFailed(error)
   }
