@@ -6,6 +6,7 @@ import { checkInputContent } from './utils'
 import { getRoute53ZoneID } from './route-53'
 import { getOaiArn } from './s3'
 import { getCFStackStatus, waitForStack, getLambdaARN } from './cloudformation'
+import { getCertificateARN } from './acm'
 
 async function run(): Promise<void> {
   try {
@@ -19,11 +20,13 @@ async function run(): Promise<void> {
     const route53ZoneID = await getRoute53ZoneID(route53ZoneName)
     const oaiArn = await getOaiArn(s3BucketName)
     const lambdaARN = await getLambdaARN(lambdaStackName)
+    const certificateARN = await getCertificateARN(route53ZoneName)
     const stackStatus = await getCFStackStatus(cfStackName)
 
     console.log('route53ZoneID', route53ZoneID)
     console.log('oaiArn', oaiArn)
     console.log('lambdaARN', lambdaARN)
+    console.log('certificateARN', certificateARN)
     console.log('stackStatus', stackStatus)
 
     waitForStack(stackStatus!)
