@@ -7,16 +7,7 @@ type GetCFStackStatus = (stackName: string) => Promise<string | undefined>
 
 const getCFStackStatus: GetCFStackStatus = async (stackName) => {
   try {
-    const availableStacks = await cloudFormation.listStacks().promise()
-
-    const testing = await cloudFormation
-      .describeStacks({
-        StackName:
-          'arn:aws:cloudformation:eu-west-1:***:stack/inventory-soldevents-215101275-a/a738f270-e211-11ea-b1dd-02f0c9b42810',
-      })
-      .promise()
-
-    console.log('TEST', testing)
+    const availableStacks = await cloudFormation.listStackSets().promise()
 
     console.log(stackName)
 
