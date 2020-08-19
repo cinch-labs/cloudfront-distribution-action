@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
-import { CloudFormation } from 'aws-sdk'
+// import { CloudFormation } from 'aws-sdk'
 
-const cloudFormation = new CloudFormation()
+// const cloudFormation = new CloudFormation()
 
 type CreateStack = (
   region: string,
