@@ -5,7 +5,7 @@ import { Input } from './types'
 import { checkInputContent } from './utils'
 import { getRoute53ZoneID } from './route-53'
 import { getOaiArn } from './s3'
-import { getCFStackStatus } from './cloudformation'
+import { getCFStackStatus, waitForStack } from './cloudformation'
 
 async function run(): Promise<void> {
   try {
@@ -23,6 +23,8 @@ async function run(): Promise<void> {
     console.log('zoneID', zoneID)
     console.log('oaiArn', oaiArn)
     console.log('stackStatus', stackStatus)
+
+    waitForStack(stackStatus!)
   } catch (error) {
     core.setFailed(error.message)
   }
