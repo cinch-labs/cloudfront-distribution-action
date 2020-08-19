@@ -13,7 +13,11 @@ const getOaiArn: GetOaiArn = async (bucketName) => {
       throw new Error('No policy exists for the specified S3 bucket')
     }
 
-    const arn = JSON.parse(bucketPolicy.Policy).Statement[0].Principal.AWS
+    const arn = JSON.parse(bucketPolicy.Policy)?.Statement[0]?.Principal?.AWS
+
+    if (!arn) {
+      throw new Error('No principal ARN exists for the specified S3 bucket')
+    }
 
     return arn
   } catch (error) {
