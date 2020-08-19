@@ -8,7 +8,14 @@ type GetLambdaARN = (lambdaStackName: string) => Promise<string | undefined>
 const getLambdaARN: GetLambdaARN = async (lambdaStackName) => {
   try {
     const lambdaStackDescription = await cloudFormation.describeStacks({ StackName: lambdaStackName }).promise()
-    console.log(lambdaStackDescription)
+
+    if (!lambdaStackDescription.Stacks) {
+      throw new Error(`No stacks associated with lambda '${lambdaStackName}'`)
+    }
+
+    const stackOutputs = lambdaStackDescription.Stacks[0].Outputs
+
+    console.log('stackOutputs', stackOutputs)
 
     return 'lambdaStackDescription'
   } catch (error) {
