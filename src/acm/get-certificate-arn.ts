@@ -11,7 +11,7 @@ const getCertificateARN: GetCertificateARN = async (route53ZoneName) => {
 
     const certificateARN = certificates.CertificateSummaryList?.filter(
       (certificate) => certificate.DomainName === route53ZoneName,
-    )[0].CertificateArn
+    )[0]?.CertificateArn
 
     console.log(route53ZoneName)
     console.log('certificateARN', certificateARN)
