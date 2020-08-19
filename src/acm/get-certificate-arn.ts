@@ -9,9 +9,12 @@ const getCertificateARN: GetCertificateARN = async (route53ZoneName) => {
   try {
     const certificates = await acm.listCertificates().promise()
 
-    const certificateARN = certificates.CertificateSummaryList?.filter(
-      (certificate) => certificate.DomainName === route53ZoneName,
-    )[0]?.CertificateArn
+    const certificateARN = certificates.CertificateSummaryList?.filter((certificate) => {
+      console.log('12certificate.DomainName', certificate.DomainName)
+      console.log('12route53ZoneName', route53ZoneName)
+
+      return certificate.DomainName === route53ZoneName
+    })[0]?.CertificateArn
 
     console.log(route53ZoneName)
     console.log('certificateARN', certificateARN)
