@@ -54,7 +54,7 @@ jobs:
         uses: ./
         with:
           cloudformation-stack-name: github-action-integration-test
-          lambda-stack-name: feature-preview-auth-lambda
+          lambda-stack-name: frontend-rewrites-lambda-with-auth
           route-53-zone-name: 'feature.aws.cinch.co.uk'
           s3-bucket-name: cinch-feature-preview-artifacts
           subdirectory-name: github-action-integration-test

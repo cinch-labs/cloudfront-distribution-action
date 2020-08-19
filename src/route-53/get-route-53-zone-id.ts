@@ -3,6 +3,11 @@ import { Route53 } from 'aws-sdk'
 
 const route53 = new Route53()
 
+export const trimHostedZoneID = (input: string): string => {
+  const arrayOfParts = input.split('/')
+  return arrayOfParts[arrayOfParts.length - 1]
+}
+
 type GetRoute53ZoneID = (zoneName: string) => Promise<string | undefined>
 
 const getRoute53ZoneID: GetRoute53ZoneID = async (zoneName) => {
@@ -14,7 +19,7 @@ const getRoute53ZoneID: GetRoute53ZoneID = async (zoneName) => {
       throw new Error(`No ID exists for Route53 zone name '${zoneName}'`)
     }
 
-    return hostedZoneID
+    return trimHostedZoneID(hostedZoneID)
   } catch (error) {
     core.setFailed(error)
   }
