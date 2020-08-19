@@ -4,6 +4,7 @@ import { Input } from './types'
 
 import { checkInputContent } from './utils'
 import { getRoute53ZoneID } from './route-53'
+import { getOaiArn } from './s3'
 
 async function run(): Promise<void> {
   try {
@@ -23,7 +24,11 @@ async function run(): Promise<void> {
 
     const zoneID = await getRoute53ZoneID(route53ZoneName)
 
-    console.log(zoneID)
+    console.log('zoneID', zoneID)
+
+    const oaiArn = await getOaiArn(s3BucketName)
+
+    console.log('oaiArn', oaiArn)
 
     core.info(`ZONE_ID IS ${zoneID}`)
   } catch (error) {
