@@ -8,18 +8,17 @@ type GetCFStackStatus = (stackName: string) => Promise<string | undefined>
 const getCFStackStatus: GetCFStackStatus = async (stackName) => {
   try {
     const availableStacks = (await cloudFormation.listStacks().promise()).StackSummaries
+    const stackExists = availableStacks?.some((stack) => stack.StackName === stackName)
 
-    const inputStackExists = availableStacks?.some((stack) => stack.StackName === stackName)
-
-    if (!inputStackExists) {
-      throw new Error('stack does not exist')
+    if (!stackExists) {
+      throw new Error('Stack does not exist for given CloudFormationStackName')
     }
 
-    const inputStackDescription = await cloudFormation.describeStacks({ StackName: stackName }).promise()
+    const stackDescription = await cloudFormation.describeStacks({ StackName: stackName }).promise()
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const stackStatus = stackDescription.Stacks![0].StackStatus
 
-    console.log('inputStackDescription', inputStackDescription)
-
-    return 'status'
+    return stackStatus
   } catch (error) {
     core.setFailed(error)
   }
