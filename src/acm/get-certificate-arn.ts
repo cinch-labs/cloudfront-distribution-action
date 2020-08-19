@@ -9,10 +9,18 @@ const getCertificateARN: GetCertificateARN = async (route53ZoneName) => {
   try {
     const certificates = await acm.listCertificates().promise()
 
-    console.log(route53ZoneName)
-    console.log('certificates', certificates)
+    const certificateARN = certificates.CertificateSummaryList?.filter(
+      (certificate) => certificate.DomainName === route53ZoneName,
+    )[0].CertificateArn
 
-    return ''
+    console.log(route53ZoneName)
+    console.log('certificateARN', certificateARN)
+
+    if (!certificateARN) {
+      throw new Error(`No ARN can be found for domain '${route53ZoneName}'`)
+    }
+
+    return certificateARN
   } catch (error) {
     core.setFailed(error)
   }
