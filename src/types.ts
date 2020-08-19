@@ -5,4 +5,5 @@ export enum Input {
   S3_BUCKET_NAME = 's3-bucket-name',
   SUBDIRECTORY_NAME = 'subdirectory-name',
   AWS_REGION = 'aws-region',
+  CERTIFICATE_HAS_WILDCARD_PREFIX = 'certificate-has-wildcard-prefix',
 }

@@ -20,6 +20,10 @@ inputs:
   aws-region:
     required: true
     description: 'The AWS region where cloudformation stack will be deployed to'
+  certificate-has-wildcard-prefix:
+    required: false
+    description: 'Does the SSL certificate have a wildcard prefix'
+    default: false
 runs:
   using: 'node12'
   main: 'dist/index.js'

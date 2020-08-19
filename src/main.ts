@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 
 import { Input } from './types'
 
-import { checkInputContent } from './utils'
+import { checkInputContent, checkBooleanInput } from './utils'
 import { getRoute53ZoneID } from './route-53'
 import { getOaiArn } from './s3'
 import { getCFStackStatus, waitForStack, getLambdaARN } from './cloudformation'
@@ -14,13 +14,17 @@ async function run(): Promise<void> {
     const lambdaStackName = checkInputContent(core.getInput(Input.LAMBDA_STACK_NAME), Input.LAMBDA_STACK_NAME)
     const route53ZoneName = checkInputContent(core.getInput(Input.ROUTE_53_ZONE_NAME), Input.ROUTE_53_ZONE_NAME)
     const s3BucketName = checkInputContent(core.getInput(Input.S3_BUCKET_NAME), Input.S3_BUCKET_NAME)
+    const certificateHasWildcardPrefix = checkBooleanInput(
+      core.getInput(Input.CERTIFICATE_HAS_WILDCARD_PREFIX),
+      Input.CERTIFICATE_HAS_WILDCARD_PREFIX,
+    )
     // const subdirectoryName = checkInputContent(core.getInput(Input.SUBDIRECTORY_NAME), Input.SUBDIRECTORY_NAME)
     // const awsRegion = checkInputContent(core.getInput(Input.AWS_REGION), Input.AWS_REGION)
 
     const route53ZoneID = await getRoute53ZoneID(route53ZoneName)
     const oaiArn = await getOaiArn(s3BucketName)
     const lambdaARN = await getLambdaARN(lambdaStackName)
-    const certificateARN = await getCertificateARN(route53ZoneName)
+    const certificateARN = await getCertificateARN(route53ZoneName, certificateHasWildcardPrefix!)
     const stackStatus = await getCFStackStatus(cfStackName)
 
     console.log('route53ZoneID', route53ZoneID)
