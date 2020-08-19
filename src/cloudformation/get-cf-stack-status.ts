@@ -7,11 +7,17 @@ type GetCFStackStatus = (stackName: string) => Promise<string | undefined>
 
 const getCFStackStatus: GetCFStackStatus = async (stackName) => {
   try {
-    const availableStacks = await cloudFormation.listStackSets().promise()
+    const availableStacks = (await cloudFormation.listStacks().promise()).StackSummaries
 
-    console.log(stackName)
+    const inputStackExists = availableStacks?.some((stack) => stack.StackName === stackName)
 
-    console.log('availableStacks', availableStacks)
+    if (!inputStackExists) {
+      throw new Error('stack does not exist')
+    }
+
+    const inputStackDescription = await cloudFormation.describeStacks({ StackName: stackName }).promise()
+
+    console.log('inputStackDescription', inputStackDescription)
 
     return 'status'
   } catch (error) {
