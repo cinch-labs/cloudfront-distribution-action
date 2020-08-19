@@ -53,7 +53,7 @@ jobs:
       - name: Creating a cloudfront distribution
         uses: ./
         with:
-          cloudformation-stack-name: feature-finance-employment-page
+          cloudformation-stack-name: github-action-integration-test
           lambda-stack-name: feature-preview-auth-lambda
           route-53-zone-name: feature.aws.cinch.co.uk
           s3-bucket-name: cinch-feature-preview-artifacts

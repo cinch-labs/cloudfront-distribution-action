@@ -37,7 +37,7 @@ const waitForStack: WaitForStack = async (stackStatus) => {
       setCompleteInfo(StackStatus.DELETE_IN_PROGRESS)
     }
 
-    core.info(`Stack status is ${stackStatus}, continuing...`)
+    core.info(`Stack status is in ${stackStatus} state. Continuing...`)
   } catch (error) {
     core.setFailed(error)
   }
