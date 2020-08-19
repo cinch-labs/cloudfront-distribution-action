@@ -10,7 +10,6 @@ type CreateStack = (
   subdirectoryName: string,
   lambdaARN: string,
   route53ZoneID: string,
-  route53ZoneName: string,
   certificateARN: string,
   oaiARN: string,
 ) => Promise<void>
@@ -22,7 +21,6 @@ const createStack: CreateStack = async (
   subdirectoryName,
   lambdaARN,
   route53ZoneID,
-  route53ZoneName,
   certificateARN,
   oaiARN,
 ) => {
@@ -33,7 +31,6 @@ const createStack: CreateStack = async (
     console.log('subdirectoryName', subdirectoryName)
     console.log('lambdaARN', lambdaARN)
     console.log('route53ZoneID', route53ZoneID)
-    console.log('route53ZoneName', route53ZoneName)
     console.log('certificateARN', certificateARN)
     console.log('oaiARN', oaiARN)
   } catch (error) {

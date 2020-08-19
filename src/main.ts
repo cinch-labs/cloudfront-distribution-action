@@ -29,17 +29,7 @@ async function run(): Promise<void> {
 
     waitForStack(stackStatus!)
 
-    createStack(
-      awsRegion,
-      cfStackName,
-      s3BucketName,
-      subdirectoryName,
-      lambdaARN!,
-      route53ZoneID!,
-      route53ZoneName,
-      certificateARN!,
-      oaiArn!,
-    )
+    createStack(awsRegion, cfStackName, s3BucketName, subdirectoryName, lambdaARN!, route53ZoneID!, certificateARN!, oaiArn!)
   } catch (error) {
     core.setFailed(error.message)
   }

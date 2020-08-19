@@ -3,6 +3,11 @@ import { S3 } from 'aws-sdk'
 
 const route53 = new S3()
 
+export const trimOaiArn = (input: string): string => {
+  const arrayOfParts = input.split(' ')
+  return arrayOfParts[arrayOfParts.length - 1]
+}
+
 type GetOaiArn = (bucketName: string) => Promise<string | undefined>
 
 const getOaiArn: GetOaiArn = async (bucketName) => {
@@ -13,13 +18,13 @@ const getOaiArn: GetOaiArn = async (bucketName) => {
       throw new Error(`No policy exists for S3 bucket '${bucketName}'`)
     }
 
-    const arn = JSON.parse(bucketPolicy.Policy)?.Statement[0]?.Principal?.AWS
+    const oaiArn = JSON.parse(bucketPolicy.Policy)?.Statement[0]?.Principal?.AWS
 
-    if (!arn) {
+    if (!oaiArn) {
       throw new Error(`No principal ARN exists for S3 bucket '${bucketName}'`)
     }
 
-    return arn
+    return trimOaiArn(oaiArn)
   } catch (error) {
     core.setFailed(error)
   }
