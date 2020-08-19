@@ -55,7 +55,7 @@ jobs:
         with:
           cloudformation-stack-name: github-action-integration-test
           lambda-stack-name: feature-preview-auth-lambda
-          route-53-zone-name: '*.feature.aws.cinch.co.uk'
+          route-53-zone-name: '*.preview.aws.cinch.co.uk'
           s3-bucket-name: cinch-feature-preview-artifacts
           subdirectory-name: github-action-integration-test
           aws-region: eu-west-1
