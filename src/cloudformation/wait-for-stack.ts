@@ -9,6 +9,10 @@ type WaitForStack = (stackStatus: StackStatus) => Promise<void>
 
 const setWaitingInfo = (status: StackStatus) => core.info(`Waiting for stack status '${status}' to complete`)
 const setCompleteInfo = (status: StackStatus) => core.info(`'${status}' complete`)
+const setContinuingInfo = (status: StackStatus) =>
+  status === StackStatus.DOES_NOT_EXIST
+    ? core.info('Stack does not exist yet. Continuing...')
+    : core.info(`Stack status is in ${status} state. Continuing...`)
 
 const waitForStack: WaitForStack = async (stackStatus) => {
   try {
@@ -37,7 +41,7 @@ const waitForStack: WaitForStack = async (stackStatus) => {
       setCompleteInfo(StackStatus.DELETE_IN_PROGRESS)
     }
 
-    core.info(`Stack status is in ${stackStatus} state. Continuing...`)
+    setContinuingInfo(stackStatus)
   } catch (error) {
     core.setFailed(error)
   }
