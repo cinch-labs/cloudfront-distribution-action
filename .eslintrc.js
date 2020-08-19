@@ -9,7 +9,8 @@ module.exports = {
     'prettier/@typescript-eslint',
   ],
   rules: {
-    'no-console': 1, // Avoid leaving console logs behind
-    'prefer-template': 1, // Prefer template strings
+    'no-console': 1,
+    'prefer-template': 1,
+    '@typescript-eslint/no-non-null-assertion': 0,
   },
 }

@@ -17,7 +17,6 @@ const getCFStackStatus: GetCFStackStatus = async (stackName) => {
     }
 
     const stackDescription = await cloudFormation.describeStacks({ StackName: stackName }).promise()
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const stackStatus = stackDescription.Stacks![0].StackStatus
 
     return stackStatus as StackStatus
