@@ -12,6 +12,7 @@ type CreateStack = (
   route53ZoneID: string,
   certificateARN: string,
   oaiARN: string,
+  fullDomain: string,
 ) => Promise<void>
 
 const createStack: CreateStack = async (
@@ -23,6 +24,7 @@ const createStack: CreateStack = async (
   route53ZoneID,
   certificateARN,
   oaiARN,
+  fullDomain,
 ) => {
   try {
     console.log('region', region)
@@ -33,6 +35,7 @@ const createStack: CreateStack = async (
     console.log('route53ZoneID', route53ZoneID)
     console.log('certificateARN', certificateARN)
     console.log('oaiARN', oaiARN)
+    console.log('fullDomain', fullDomain)
   } catch (error) {
     core.setFailed(error)
   }

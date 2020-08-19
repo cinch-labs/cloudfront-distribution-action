@@ -59,4 +59,4 @@ jobs:
           s3-bucket-name: cinch-feature-preview-artifacts
           subdirectory-name: github-action-integration-test
           aws-region: eu-west-1
-          certificate-has-wildcard-prefix: true
+          subdomain-prefix: github-action-integration-test

@@ -1,4 +1,4 @@
 import { checkInputContent } from './check-input-content'
-import { checkBooleanInput } from './check-boolean-input'
+import { getFullDomain } from './get-full-domain'
 
-export { checkInputContent, checkBooleanInput }
+export { checkInputContent, getFullDomain }
