@@ -1,9 +1,11 @@
 import * as core from '@actions/core'
 import { CloudFormation } from 'aws-sdk'
 
+import { StackStatus } from './types'
+
 const cloudFormation = new CloudFormation()
 
-type GetCFStackStatus = (stackName: string) => Promise<string | undefined>
+type GetCFStackStatus = (stackName: string) => Promise<StackStatus | undefined>
 
 const getCFStackStatus: GetCFStackStatus = async (stackName) => {
   try {
@@ -11,14 +13,14 @@ const getCFStackStatus: GetCFStackStatus = async (stackName) => {
     const stackExists = availableStacks?.some((stack) => stack.StackName === stackName)
 
     if (!stackExists) {
-      throw new Error('Stack does not exist for given CloudFormationStackName')
+      return StackStatus.DOES_NOT_EXIST
     }
 
     const stackDescription = await cloudFormation.describeStacks({ StackName: stackName }).promise()
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const stackStatus = stackDescription.Stacks![0].StackStatus
 
-    return stackStatus
+    return stackStatus as StackStatus
   } catch (error) {
     core.setFailed(error)
   }
