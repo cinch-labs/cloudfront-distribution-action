@@ -42,6 +42,8 @@ jobs:
     env:
       BUCKET_NAME: cinch-feature-preview-artifacts
       SUBDIRECTORY_NAME: github-action-integration-test
+      BASIC_USER: ${{ secrets.BASIC_USER }}
+      BASIC_PASS: ${{ secrets.BASIC_PASS }}
 
     steps:
       - uses: actions/checkout@v2
@@ -70,3 +72,6 @@ jobs:
 
       - name: Log output URL
         run: echo "${{ steps.provision-infrastructure.outputs.url }}"
+
+      - name: Test that mock site is as expected
+        run: ./scripts/test-site.sh "${{ steps.provision-infrastructure.outputs.url }}" "$BASIC_USER" "$BASIC_PASS"
