@@ -51,6 +51,7 @@ jobs:
           aws-region: eu-west-1
 
       - name: Creating a cloudfront distribution
+        id: provision-infrastructure
         uses: ./
         with:
           cloudformation-stack-name: github-action-integration-test
@@ -60,3 +61,6 @@ jobs:
           subdirectory-name: github-action-integration-test
           aws-region: eu-west-1
           subdomain-prefix: github-action-integration-test
+
+      - name: Log output URL
+        run: echo "${{ steps.provision-infrastructure.outputs.url }}"

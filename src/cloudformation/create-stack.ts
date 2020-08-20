@@ -27,8 +27,6 @@ const createStack: CreateStack = async (
   fullDomain,
 ) => {
   try {
-    core.info(`Creating/updating stack '${stackName}'...`)
-
     const cloudFormation = new CloudFormation({ region: region })
 
     const templateBody = loadYaml('/cloudfront-distribution.yml')
@@ -60,6 +58,8 @@ const createStack: CreateStack = async (
       await cloudFormation.waitFor('stackCreateComplete', { StackName: stackName }).promise()
       core.info(`Completed stack creation for '${stackName}'`)
     }
+
+    core.setOutput('url', `https://${fullDomain}`)
   } catch (error) {
     core.setFailed(error)
   }
