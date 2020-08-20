@@ -5,7 +5,7 @@ import { StackStatus } from './types'
 
 const cloudFormation = new CloudFormation()
 
-const setWaitingInfo = (status: StackStatus) => core.info(`Waiting for stack status '${status}' to complete`)
+const setWaitingInfo = (status: StackStatus) => core.info(`Waiting for stack status '${status}' to complete...`)
 const setCompleteInfo = (status: StackStatus) => core.info(`'${status}' complete`)
 const setContinuingInfo = (status: StackStatus) =>
   status === StackStatus.DOES_NOT_EXIST
@@ -16,8 +16,6 @@ type WaitForStack = (stackStatus: StackStatus) => Promise<void>
 
 const waitForStack: WaitForStack = async (stackStatus) => {
   try {
-    core.info(`Waiting for stack to be in an updatable state...`)
-
     const isUnrecoverable =
       stackStatus === StackStatus.UPDATE_ROLLBACK_FAILED ||
       stackStatus === StackStatus.DELETE_FAILED ||
