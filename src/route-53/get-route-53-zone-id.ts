@@ -21,6 +21,8 @@ const getRoute53ZoneID: GetRoute53ZoneID = async (zoneName) => {
       throw new Error(`No ID exists for Route53 zone name '${zoneName}'`)
     }
 
+    core.info(`Route53ZoneID is ${hostedZoneID}`)
+
     return trimHostedZoneID(hostedZoneID)
   } catch (error) {
     core.setFailed(error)

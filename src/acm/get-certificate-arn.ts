@@ -19,6 +19,8 @@ const getCertificateARN: GetCertificateARN = async (route53ZoneName, certificate
       throw new Error(`No ARN can be found for domain '${route53ZoneName}'`)
     }
 
+    core.info(`Certificate ARN is ${certificateARN}`)
+
     return certificateARN
   } catch (error) {
     core.setFailed(error)

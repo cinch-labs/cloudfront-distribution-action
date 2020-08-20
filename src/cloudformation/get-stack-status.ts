@@ -21,6 +21,8 @@ const getCFStackStatus: GetCFStackStatus = async (stackName) => {
     const stackDescription = await cloudFormation.describeStacks({ StackName: stackName }).promise()
     const stackStatus = stackDescription.Stacks![0].StackStatus
 
+    core.info(`Stack status is ${stackStatus}`)
+
     return stackStatus as StackStatus
   } catch (error) {
     core.setFailed(error)

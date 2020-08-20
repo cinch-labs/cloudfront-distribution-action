@@ -23,6 +23,8 @@ const getLambdaARN: GetLambdaARN = async (lambdaStackName) => {
       throw new Error(`No ARN can be found for the lambda ${lambdaStackName}`)
     }
 
+    core.info(`Lambda ARN is ${lambdaARN}`)
+
     return lambdaARN
   } catch (error) {
     core.setFailed(error)

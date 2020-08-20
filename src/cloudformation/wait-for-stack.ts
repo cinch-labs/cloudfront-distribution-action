@@ -16,6 +16,8 @@ type WaitForStack = (stackStatus: StackStatus) => Promise<void>
 
 const waitForStack: WaitForStack = async (stackStatus) => {
   try {
+    core.info(`Waiting for stack to be in an updatable state...`)
+
     const isUnrecoverable =
       stackStatus === StackStatus.UPDATE_ROLLBACK_FAILED ||
       stackStatus === StackStatus.DELETE_FAILED ||
