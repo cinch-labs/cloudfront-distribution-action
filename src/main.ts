@@ -24,7 +24,7 @@ async function run(): Promise<void> {
     const certificateARN = await getCertificateARN(route53ZoneName, subdomainPrefix.length >= 1)
     const stackStatus = await getCFStackStatus(cfStackName)
 
-    await waitForStack(stackStatus!)
+    await waitForStack(stackStatus!, cfStackName)
 
     createStack(
       awsRegion,

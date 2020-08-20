@@ -5,16 +5,19 @@ import { StackStatus } from './types'
 
 const cloudFormation = new CloudFormation()
 
-const setWaitingInfo = (status: StackStatus) => core.info(`Waiting for stack status '${status}' to complete...`)
+const setWaitingInfo = (stackName: string, status: StackStatus) =>
+  core.info(`Waiting for '${stackName}' to finish '${status}'...`)
+
 const setCompleteInfo = (status: StackStatus) => core.info(`'${status}' complete`)
+
 const setContinuingInfo = (status: StackStatus) =>
   status === StackStatus.DOES_NOT_EXIST
     ? core.info('Stack does not exist yet. Continuing...')
     : core.info(`Stack status is in ${status} state. Continuing...`)
 
-type WaitForStack = (stackStatus: StackStatus) => Promise<void>
+type WaitForStack = (stackStatus: StackStatus, stackName: string) => Promise<void>
 
-const waitForStack: WaitForStack = async (stackStatus) => {
+const waitForStack: WaitForStack = async (stackStatus, stackName) => {
   try {
     const isUnrecoverable =
       stackStatus === StackStatus.UPDATE_ROLLBACK_FAILED ||
@@ -26,18 +29,18 @@ const waitForStack: WaitForStack = async (stackStatus) => {
     }
 
     if (stackStatus === StackStatus.CREATE_IN_PROGRESS) {
-      setWaitingInfo(StackStatus.CREATE_IN_PROGRESS)
-      await cloudFormation.waitFor('stackCreateComplete').promise()
+      setWaitingInfo(stackName, StackStatus.CREATE_IN_PROGRESS)
+      await cloudFormation.waitFor('stackCreateComplete', { StackName: stackName }).promise()
       setCompleteInfo(StackStatus.CREATE_IN_PROGRESS)
     }
     if (stackStatus === StackStatus.UPDATE_IN_PROGRESS) {
-      setWaitingInfo(StackStatus.UPDATE_IN_PROGRESS)
-      await cloudFormation.waitFor('stackUpdateComplete').promise()
+      setWaitingInfo(stackName, StackStatus.UPDATE_IN_PROGRESS)
+      await cloudFormation.waitFor('stackUpdateComplete', { StackName: stackName }).promise()
       setCompleteInfo(StackStatus.UPDATE_IN_PROGRESS)
     }
     if (stackStatus === StackStatus.DELETE_IN_PROGRESS) {
-      setWaitingInfo(StackStatus.DELETE_IN_PROGRESS)
-      await cloudFormation.waitFor('stackDeleteComplete').promise()
+      setWaitingInfo(stackName, StackStatus.DELETE_IN_PROGRESS)
+      await cloudFormation.waitFor('stackDeleteComplete', { StackName: stackName }).promise()
       setCompleteInfo(StackStatus.DELETE_IN_PROGRESS)
     }
 
