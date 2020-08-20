@@ -39,6 +39,9 @@ jobs:
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
+    env:
+      BUCKET_NAME: cinch-feature-preview-artifacts
+      SUBDIRECTORY_NAME: github-action-integration-test
 
     steps:
       - uses: actions/checkout@v2
@@ -50,15 +53,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_DEV_DEPLOY_ACCESS_SECRET }}
           aws-region: eu-west-1
 
-      - name: Creating a cloudfront distribution
+      - name: Create a mock site for testing
+        run: ./scripts/create-site.sh "$BUCKET_NAME" "$SUBDIRECTORY_NAME"
+
+      - name: Create a cloudfront distribution
         id: provision-infrastructure
         uses: ./
         with:
           cloudformation-stack-name: github-action-integration-test
           lambda-stack-name: frontend-rewrites-lambda-with-auth
           route-53-zone-name: 'feature.aws.cinch.co.uk'
-          s3-bucket-name: cinch-feature-preview-artifacts
-          subdirectory-name: github-action-integration-test
+          s3-bucket-name: ${{ env.BUCKET_NAME }}
+          subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}
           aws-region: eu-west-1
           subdomain-prefix: github-action-integration-test
 
