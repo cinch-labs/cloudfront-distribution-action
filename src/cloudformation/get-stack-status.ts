@@ -15,6 +15,7 @@ const getCFStackStatus: GetCFStackStatus = async (stackName) => {
     const stackExists = availableStacks?.some((stack) => stack.StackName === stackName)
 
     if (!stackExists) {
+      core.info('NO STACK')
       return StackStatus.DOES_NOT_EXIST
     }
 
