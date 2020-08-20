@@ -7,7 +7,7 @@ type GetCertificateARN = (route53ZoneName: string, certificateHasWildcardPrefix:
 
 const getCertificateARN: GetCertificateARN = async (route53ZoneName, certificateHasWildcardPrefix) => {
   try {
-    core.info(`Getting Certificate ARN for stack '${route53ZoneName}'...`)
+    core.info(`Getting Certificate ARN for Route53Zone '${route53ZoneName}'...`)
 
     const certificates = await acm.listCertificates().promise()
 
