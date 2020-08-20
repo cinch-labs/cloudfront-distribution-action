@@ -27,6 +27,8 @@ const createStack: CreateStack = async (
   fullDomain,
 ) => {
   try {
+    core.info(`Creating/updating stack '${stackName}'...`)
+
     const cloudFormation = new CloudFormation({ region: region })
 
     const templateBody = loadYaml('../templates/cloudfront-distribution.yml')

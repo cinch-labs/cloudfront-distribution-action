@@ -7,6 +7,8 @@ type GetLambdaARN = (lambdaStackName: string) => Promise<string | undefined>
 
 const getLambdaARN: GetLambdaARN = async (lambdaStackName) => {
   try {
+    core.info(`Getting Lambda ARN for stack '${lambdaStackName}'...`)
+
     const lambdaStackDescription = await cloudFormation.describeStacks({ StackName: lambdaStackName }).promise()
 
     if (!lambdaStackDescription.Stacks) {

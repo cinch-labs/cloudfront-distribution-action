@@ -9,6 +9,8 @@ type GetCFStackStatus = (stackName: string) => Promise<StackStatus | undefined>
 
 const getCFStackStatus: GetCFStackStatus = async (stackName) => {
   try {
+    core.info(`Getting CloudFormation stack status for stack '${stackName}'...`)
+
     const availableStacks = (await cloudFormation.listStacks().promise()).StackSummaries
     const stackExists = availableStacks?.some((stack) => stack.StackName === stackName)
 

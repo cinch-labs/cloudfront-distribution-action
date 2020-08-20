@@ -12,6 +12,8 @@ type GetOaiArn = (bucketName: string) => Promise<string | undefined>
 
 const getOaiArn: GetOaiArn = async (bucketName) => {
   try {
+    core.info(`Getting OAI ARN for bucket '${bucketName}'...`)
+
     const bucketPolicy = await route53.getBucketPolicy({ Bucket: bucketName }).promise()
 
     if (!bucketPolicy.Policy) {
