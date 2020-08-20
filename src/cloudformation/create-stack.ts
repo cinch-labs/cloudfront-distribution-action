@@ -31,7 +31,7 @@ const createStack: CreateStack = async (
 
     const cloudFormation = new CloudFormation({ region: region })
 
-    const templateBody = loadYaml('../templates/cloudfront-distribution.yml')
+    const templateBody = loadYaml('/cloudfront-distribution.yml')
 
     const parameters: CloudFormation.Types.CreateStackInput = {
       Tags: [{ Key: 'branch', Value: stackName }],
