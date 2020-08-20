@@ -12,14 +12,7 @@ const getCFStackStatus: GetCFStackStatus = async (stackName) => {
     core.info(`Getting CloudFormation stack status for stack '${stackName}'...`)
 
     const availableStacks = (await cloudFormation.listStacks().promise()).StackSummaries
-
-    const stackExists = availableStacks?.some((stack) => {
-      console.log('stack.StackName', stack.StackName)
-      console.log('stackName', stackName)
-
-      return stack.StackName === stackName
-    })
-    console.log('stackExists', stackExists)
+    const stackExists = availableStacks?.some((stack) => stack.StackName === stackName && stack.StackStatus !== 'DELETE_COMPLETE')
 
     if (!stackExists) {
       return StackStatus.DOES_NOT_EXIST
