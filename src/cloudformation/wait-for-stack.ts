@@ -10,11 +10,6 @@ const setWaitingInfo = (stackName: string, status: StackStatus) =>
 
 const setCompleteInfo = (status: StackStatus) => core.info(`'${status}' complete`)
 
-const setContinuingInfo = (status: StackStatus) =>
-  status === StackStatus.DOES_NOT_EXIST
-    ? core.info('Stack does not exist yet. Continuing...')
-    : core.info(`Stack status is in ${status} state. Continuing...`)
-
 type WaitForStack = (stackStatus: StackStatus, stackName: string) => Promise<void>
 
 const waitForStack: WaitForStack = async (stackStatus, stackName) => {
@@ -43,8 +38,6 @@ const waitForStack: WaitForStack = async (stackStatus, stackName) => {
       await cloudFormation.waitFor('stackDeleteComplete', { StackName: stackName }).promise()
       setCompleteInfo(StackStatus.DELETE_IN_PROGRESS)
     }
-
-    setContinuingInfo(stackStatus)
   } catch (error) {
     core.setFailed(error)
   }

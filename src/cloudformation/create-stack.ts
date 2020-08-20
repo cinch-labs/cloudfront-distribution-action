@@ -48,7 +48,7 @@ const createStack: CreateStack = async (
       TemplateBody: templateBody,
     }
 
-    await cloudFormation.createStack(parameters).promise()
+    await cloudFormation.updateStack(parameters).promise()
   } catch (error) {
     core.setFailed(error)
   }
