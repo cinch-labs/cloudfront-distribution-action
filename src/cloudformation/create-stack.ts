@@ -54,7 +54,7 @@ const createStack: CreateStack = async (
     if (stackExists) {
       const data = await cloudFormation.createChangeSet({ ...parameters, ChangeSetName: stackName }).promise()
 
-      console.log('DATA', data)
+      console.log('DATA', data.$response)
 
       await cloudFormation.updateStack(parameters).promise()
     } else {
