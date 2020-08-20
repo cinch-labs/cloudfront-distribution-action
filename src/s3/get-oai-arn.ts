@@ -26,9 +26,11 @@ const getOaiArn: GetOaiArn = async (bucketName) => {
       throw new Error(`No principal ARN exists for S3 bucket '${bucketName}'`)
     }
 
-    core.info(`Bucket OAI ARN is ${oaiArn}`)
+    const trimmedOaiArn = trimOaiArn(oaiArn)
 
-    return trimOaiArn(oaiArn)
+    core.info(`Bucket OAI ARN is ${trimmedOaiArn}`)
+
+    return trimOaiArn(trimmedOaiArn)
   } catch (error) {
     core.setFailed(error)
   }
