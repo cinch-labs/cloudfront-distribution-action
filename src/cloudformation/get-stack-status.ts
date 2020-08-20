@@ -2,6 +2,7 @@ import * as core from '@actions/core'
 import { CloudFormation } from 'aws-sdk'
 
 import { StackStatus } from './types'
+import { checkStackExists } from '../utils'
 
 const cloudFormation = new CloudFormation()
 
@@ -12,7 +13,7 @@ const getCFStackStatus: GetCFStackStatus = async (stackName) => {
     core.info(`Getting CloudFormation stack status for stack '${stackName}'...`)
 
     const availableStacks = (await cloudFormation.listStacks().promise()).StackSummaries
-    const stackExists = availableStacks?.some((stack) => stack.StackName === stackName && stack.StackStatus !== 'DELETE_COMPLETE')
+    const stackExists = checkStackExists(availableStacks, stackName)
 
     if (!stackExists) {
       return StackStatus.DOES_NOT_EXIST

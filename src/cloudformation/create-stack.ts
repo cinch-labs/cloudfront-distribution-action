@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import { CloudFormation } from 'aws-sdk'
 
-import { loadYaml } from '../utils'
+import { loadYaml, checkStackExists } from '../utils'
 
 type CreateStack = (
   region: string,
@@ -48,7 +48,14 @@ const createStack: CreateStack = async (
       TemplateBody: templateBody,
     }
 
-    await cloudFormation.updateStack(parameters).promise()
+    const availableStacks = (await cloudFormation.listStacks().promise()).StackSummaries
+    const stackExists = checkStackExists(availableStacks, stackName)
+
+    if (stackExists) {
+      await cloudFormation.updateStack(parameters).promise()
+    } else {
+      await cloudFormation.createStack(parameters).promise()
+    }
   } catch (error) {
     core.setFailed(error)
   }

@@ -6,7 +6,7 @@ import { StackStatus } from './types'
 const cloudFormation = new CloudFormation()
 
 const setWaitingInfo = (stackName: string, status: StackStatus) =>
-  core.info(`Waiting for '${stackName}' to finish '${status}'...`)
+  core.info(`Waiting for stack '${stackName}' to finish '${status}'...`)
 
 const setCompleteInfo = (status: StackStatus) => core.info(`'${status}' complete`)
 
