@@ -52,6 +52,10 @@ const createStack: CreateStack = async (
     const stackExists = checkStackExists(availableStacks, stackName)
 
     if (stackExists) {
+      const data = await cloudFormation.createChangeSet({ ...parameters, ChangeSetName: stackName }).promise()
+
+      console.log('DATA', data)
+
       await cloudFormation.updateStack(parameters).promise()
     } else {
       await cloudFormation.createStack(parameters).promise()
