@@ -71,7 +71,7 @@ Install the dependencies
 $ npm install
 ```
 
-Build the typescript and package it for distribution
+Build and package the action for distribution
 
 ```bash
 $ npm run build && npm run package
