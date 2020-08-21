@@ -35,47 +35,39 @@ jobs:
 
       - name: Unit tests
         run: npm run test
-
-  integration-tests:
-    name: Integration Tests
-    runs-on: ubuntu-latest
-    env:
-      BUCKET_NAME: cinch-feature-preview-artifacts
-      SUBDIRECTORY_NAME: github-action-integration-test
-      SUBDOMAIN_PREFIX: github-action-integration-test
-      BASIC_USER: ${{ secrets.BASIC_USER }}
-      BASIC_PASS: ${{ secrets.BASIC_PASS }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_DEV_DEPLOY_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_DEV_DEPLOY_ACCESS_SECRET }}
-          aws-region: eu-west-1
-
-      - name: Upload a mock site for testing
-        run: ./scripts/create-site.sh "$BUCKET_NAME" "$SUBDIRECTORY_NAME"
-
-      - name: Create a CloudFormation stack
-        id: provision-infrastructure
-        uses: ./
-        with:
-          cloudformation-stack-name: feature-${{ env.SUBDOMAIN_PREFIX }}
-          lambda-stack-name: frontend-rewrites-lambda-with-auth
-          route-53-zone-name: feature.aws.cinch.co.uk
-          s3-bucket-name: ${{ env.BUCKET_NAME }}
-          subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}
-          aws-region: eu-west-1
-          subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
-
-      - name: Log output URL
-        run: echo "${{ steps.provision-infrastructure.outputs.url }}"
-
-      - name: Test that mock site is as expected
-        run: ./scripts/test-site.sh "${{ steps.provision-infrastructure.outputs.url }}" "$BASIC_USER" "$BASIC_PASS"
-
-      - name: Delete CloudFormation stack
-        run: aws cloudformation delete-stack --stack-name 'feature-${{ env.SUBDOMAIN_PREFIX }}'
+  # integration-tests:
+  #   name: Integration Tests
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     BUCKET_NAME: cinch-feature-preview-artifacts
+  #     SUBDIRECTORY_NAME: github-action-integration-test
+  #     SUBDOMAIN_PREFIX: github-action-integration-test
+  #     BASIC_USER: ${{ secrets.BASIC_USER }}
+  #     BASIC_PASS: ${{ secrets.BASIC_PASS }}
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_DEV_DEPLOY_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_DEV_DEPLOY_ACCESS_SECRET }}
+  #         aws-region: eu-west-1
+  #     - name: Upload a mock site for testing
+  #       run: ./scripts/create-site.sh "$BUCKET_NAME" "$SUBDIRECTORY_NAME"
+  #     - name: Create a CloudFormation stack
+  #       id: provision-infrastructure
+  #       uses: ./
+  #       with:
+  #         cloudformation-stack-name: feature-${{ env.SUBDOMAIN_PREFIX }}
+  #         lambda-stack-name: frontend-rewrites-lambda-with-auth
+  #         route-53-zone-name: feature.aws.cinch.co.uk
+  #         s3-bucket-name: ${{ env.BUCKET_NAME }}
+  #         subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}
+  #         aws-region: eu-west-1
+  #         subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
+  #     - name: Log output URL
+  #       run: echo "${{ steps.provision-infrastructure.outputs.url }}"
+  #     - name: Test that mock site is as expected
+  #       run: ./scripts/test-site.sh "${{ steps.provision-infrastructure.outputs.url }}" "$BASIC_USER" "$BASIC_PASS"
+  #     - name: Delete CloudFormation stack
+  #       run: aws cloudformation delete-stack --stack-name 'feature-${{ env.SUBDOMAIN_PREFIX }}'
