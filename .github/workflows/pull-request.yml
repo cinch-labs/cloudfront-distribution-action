@@ -40,11 +40,13 @@ jobs:
     name: Integration Tests
     runs-on: ubuntu-latest
     env:
-      BUCKET_NAME: cinch-feature-preview-artifacts
+      BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
       SUBDIRECTORY_NAME: github-action-integration-test
       SUBDOMAIN_PREFIX: github-action-integration-test
       BASIC_USER: ${{ secrets.BASIC_USER }}
       BASIC_PASS: ${{ secrets.BASIC_PASS }}
+      LAMBDA_STACK_NAME: ${{ secrets.LAMBDA_STACK_NAME }}
+      ROUTE_53_ZONE_NAME: ${{ secrets.ROUTE_53_ZONE_NAME }}
 
     steps:
       - uses: actions/checkout@v2
@@ -64,8 +66,8 @@ jobs:
         uses: ./
         with:
           cloudformation-stack-name: feature-${{ env.SUBDOMAIN_PREFIX }}
-          lambda-stack-name: frontend-rewrites-lambda-with-auth
-          route-53-zone-name: feature.aws.cinch.co.uk
+          lambda-stack-name: ${{ env.LAMBDA_STACK_NAME }}
+          route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
           s3-bucket-name: ${{ env.BUCKET_NAME }}
           subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}
           aws-region: eu-west-1
