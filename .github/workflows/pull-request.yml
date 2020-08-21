@@ -43,8 +43,8 @@ jobs:
       BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
       SUBDIRECTORY_NAME: github-action-integration-test
       SUBDOMAIN_PREFIX: github-action-integration-test
-      BASIC_USER: ${{ secrets.BASIC_USER }}
-      BASIC_PASS: ${{ secrets.BASIC_PASS }}
+      FEATURE_BASIC_AUTH_USER: ${{ secrets.FEATURE_BASIC_AUTH_USER }}
+      FEATURE_BASIC_AUTH_PASS: ${{ secrets.FEATURE_BASIC_AUTH_PASS }}
       LAMBDA_STACK_NAME: ${{ secrets.LAMBDA_STACK_NAME }}
       ROUTE_53_ZONE_NAME: ${{ secrets.ROUTE_53_ZONE_NAME }}
 
@@ -77,7 +77,7 @@ jobs:
         run: echo "${{ steps.provision-infrastructure.outputs.url }}"
 
       - name: Test that mock site is as expected
-        run: ./scripts/test-site.sh "${{ steps.provision-infrastructure.outputs.url }}" "$BASIC_USER" "$BASIC_PASS"
+        run: ./scripts/test-site.sh "${{ steps.provision-infrastructure.outputs.url }}" "$FEATURE_BASIC_AUTH_USER" "$FEATURE_BASIC_AUTH_PASS"
 
       - name: Delete CloudFormation stack
         run: aws cloudformation delete-stack --stack-name 'feature-${{ env.SUBDOMAIN_PREFIX }}'
