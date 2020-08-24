@@ -50,25 +50,28 @@ const createStack: CreateStack = async (
     const stackExists = checkStackExists(availableStacks, stackName)
 
     if (stackExists) {
-      core.info(`Stack '${stackName}' already exists. Continuing...`)
+      core.info(`Stack '${stackName}' already exists. Updating...`)
 
-      const response = await cloudFormation.updateStack(parameters).promise()
+      try {
+        await cloudFormation.updateStack(parameters).promise()
+        await cloudFormation.waitFor('stackUpdateComplete', { StackName: stackName }).promise()
 
-      console.log(response.$response)
-
-      await cloudFormation.waitFor('stackUpdateComplete', { StackName: stackName }).promise()
-      core.info(`Updated stack '${stackName}'`)
+        core.info(`Updated stack '${stackName}'`)
+      } catch (error) {
+        core.info('No changes to be made.')
+      }
     } else {
       core.info(`Creating stack with name '${stackName}'...`)
-      await cloudFormation.createStack(parameters).promise()
 
+      await cloudFormation.createStack(parameters).promise()
       await cloudFormation.waitFor('stackCreateComplete', { StackName: stackName }).promise()
+
       core.info(`Completed stack creation for '${stackName}'`)
     }
 
     core.setOutput('url', `https://${fullDomain}`)
   } catch (error) {
-    core.setFailed(error)
+    throw new Error(error)
   }
 }
 
