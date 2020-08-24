@@ -69,7 +69,7 @@ jobs:
           lambda-stack-name: ${{ env.LAMBDA_STACK_NAME }}
           route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
           s3-bucket-name: ${{ env.BUCKET_NAME }}
-          subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}
+          subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}/yolo
           aws-region: eu-west-1
           subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
 
