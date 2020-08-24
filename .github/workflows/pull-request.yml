@@ -76,8 +76,8 @@ jobs:
       - name: Log output URL
         run: echo "${{ steps.provision-infrastructure.outputs.url }}"
 
-      - name: Test that mock site is as expected
-        run: ./scripts/test-site.sh "${{ steps.provision-infrastructure.outputs.url }}" "$FEATURE_BASIC_AUTH_USER" "$FEATURE_BASIC_AUTH_PASS"
+      # - name: Test that mock site is as expected
+      #   run: ./scripts/test-site.sh "${{ steps.provision-infrastructure.outputs.url }}" "$FEATURE_BASIC_AUTH_USER" "$FEATURE_BASIC_AUTH_PASS"
 
-      - name: Delete CloudFormation stack
-        run: aws cloudformation delete-stack --stack-name 'feature-${{ env.SUBDOMAIN_PREFIX }}'
+      # - name: Delete CloudFormation stack
+      #   run: aws cloudformation delete-stack --stack-name 'feature-${{ env.SUBDOMAIN_PREFIX }}'
