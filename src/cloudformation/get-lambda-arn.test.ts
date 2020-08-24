@@ -1,34 +1,41 @@
-import AWS from 'aws-sdk'
-// import { mock, when, instance } from 'ts-mockito'
+import { CloudFormation } from 'aws-sdk'
 
 import { getLambdaARN } from './get-lambda-arn'
 
+jest.mock('aws-sdk')
+
 describe('getLambdaARN', () => {
   it('works ffs', async () => {
-    // const mockedCloudFormation = mock(CloudFormation)
-    // const cloudFormation = instance(mockedCloudFormation)
+    const stackName = 'stack-of-llamas'
+    const lambdaARN = 'abc123'
 
-    const ssmGetParameterPromise = jest.fn().mockReturnValue({
+    const describeStacksPromise = jest.fn().mockReturnValue({
       promise: jest.fn().mockResolvedValue({
-        Parameter: {
-          Name: 'NAME',
-          Type: 'SecureString',
-          Value: 'VALUE',
-          Version: 1,
-          LastModifiedDate: 1546551668.495,
-          ARN: 'arn:aws:ssm:ap-southeast-2:123:NAME',
-        },
+        Stacks: [
+          {
+            StackName: stackName,
+            StackStatus: 'CREATE_IN_PROGRESS',
+            CreationTime: new Date(),
+            Outputs: [
+              {
+                OutputKey: 'LambdaARN',
+                OutputValue: lambdaARN,
+              },
+            ],
+          },
+        ],
+        $response: null as any,
       }),
     })
 
-    AWS.SSM = jest.fn().mockImplementation(() => ({
-      getParameter: ssmGetParameterPromise,
+    ;(CloudFormation as any).mockImplementation(() => ({
+      describeStacks: describeStacksPromise,
     }))
 
-    when(cloudFormation.describeStacks).thenReturn()
+    const actualResult = await getLambdaARN(stackName)
 
-    await getLambdaARN('input')
+    const expectedResult = lambdaARN
 
-    expect(cloudFormation.describeStacks).toBeCalled()
+    expect(actualResult).toEqual(expectedResult)
   })
 })
