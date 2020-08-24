@@ -73,20 +73,8 @@ jobs:
           aws-region: eu-west-1
           subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
 
-      - name: Update CloudFormation stack
-        id: update-infrastructure
-        uses: ./
-        with:
-          cloudformation-stack-name: feature-${{ env.SUBDOMAIN_PREFIX }}
-          lambda-stack-name: ${{ env.LAMBDA_STACK_NAME }}
-          route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
-          s3-bucket-name: ${{ env.BUCKET_NAME }}
-          subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}
-          aws-region: eu-west-1
-          subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
-
       - name: Log output URL
-        run: echo "${{ steps.update-infrastructure.outputs.url }}"
+        run: echo "${{ steps.create-infrastructure.outputs.url }}"
 
       - name: Test that mock site is as expected
         run: ./scripts/test-site.sh "${{ steps.update-infrastructure.outputs.url }}" "$FEATURE_BASIC_AUTH_USER" "$FEATURE_BASIC_AUTH_PASS"
