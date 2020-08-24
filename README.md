@@ -29,9 +29,9 @@ The stack name is an identifier that helps you find a particular stack from a li
 
 ### `lambda-stack-name`
 
-**Required**: `true`
+**Required**: `false`
 
-This is the name of the lambda@edge that sits in front of your CloudFront distribution and handles requests.
+This is the name of the lambda@edge that sits in front of your CloudFront distribution and handles requests. This is not required if you don't need URL rewrites or basic authentication.
 
 ### `route-53-zone-name`
 
