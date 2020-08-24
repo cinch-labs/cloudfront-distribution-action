@@ -66,7 +66,7 @@ jobs:
         uses: ./
         with:
           cloudformation-stack-name: feature-${{ env.SUBDOMAIN_PREFIX }}
-          lambda-stack-name: ${{ env.LAMBDA_STACK_NAME }}
+          lambda-stack-name: alksdhfalskjflkas
           route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
           s3-bucket-name: ${{ env.BUCKET_NAME }}
           subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}

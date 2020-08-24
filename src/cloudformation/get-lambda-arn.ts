@@ -17,7 +17,7 @@ const getLambdaARN: GetLambdaARN = async (lambdaStackName) => {
 
     const stackOutputs = lambdaStackDescription.Stacks[0].Outputs
 
-    const lambdaARN = stackOutputs?.filter((output) => output.OutputKey === 'LambdaARN')[0].OutputValue
+    const lambdaARN = stackOutputs?.filter((output) => output.OutputKey === 'LambdaARN')[0]?.OutputValue
 
     if (!lambdaARN) {
       throw new Error(`No ARN can be found for the lambda ${lambdaStackName}`)
@@ -27,7 +27,7 @@ const getLambdaARN: GetLambdaARN = async (lambdaStackName) => {
 
     return lambdaARN
   } catch (error) {
-    core.setFailed(error)
+    throw new Error(error)
   }
 }
 
