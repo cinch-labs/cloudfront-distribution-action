@@ -7,6 +7,11 @@ type GetLambdaARN = (lambdaStackName: string) => Promise<string | undefined>
 
 const getLambdaARN: GetLambdaARN = async (lambdaStackName) => {
   try {
+    if (lambdaStackName.length <= 0) {
+      core.info('No rewrite/auth lambda specified. Continuing without...')
+      return lambdaStackName
+    }
+
     core.info(`Getting ARN for Lambda '${lambdaStackName}'...`)
 
     const lambdaStackDescription = await cloudFormation.describeStacks({ StackName: lambdaStackName }).promise()

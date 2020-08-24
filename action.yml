@@ -6,8 +6,9 @@ inputs:
     required: true
     description: 'The cloudformation stack for the deployment'
   lambda-stack-name:
-    required: true
+    required: false
     description: 'The stack name of the rewrite/auth lambda for the deployment'
+    default: ''
   route-53-zone-name:
     required: true
     description: 'The Route 53 zone name for the deployment'
