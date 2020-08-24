@@ -62,22 +62,34 @@ jobs:
         run: ./scripts/create-site.sh "$BUCKET_NAME" "$SUBDIRECTORY_NAME"
 
       - name: Create a CloudFormation stack
-        id: provision-infrastructure
+        id: create-infrastructure
         uses: ./
         with:
           cloudformation-stack-name: feature-${{ env.SUBDOMAIN_PREFIX }}
           lambda-stack-name: ${{ env.LAMBDA_STACK_NAME }}
           route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
           s3-bucket-name: ${{ env.BUCKET_NAME }}
-          subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}/yolo
+          subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}-abc
+          aws-region: eu-west-1
+          subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
+
+      - name: Update CloudFormation stack
+        id: update-infrastructure
+        uses: ./
+        with:
+          cloudformation-stack-name: feature-${{ env.SUBDOMAIN_PREFIX }}
+          lambda-stack-name: ${{ env.LAMBDA_STACK_NAME }}
+          route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
+          s3-bucket-name: ${{ env.BUCKET_NAME }}
+          subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}
           aws-region: eu-west-1
           subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
 
       - name: Log output URL
-        run: echo "${{ steps.provision-infrastructure.outputs.url }}"
+        run: echo "${{ steps.update-infrastructure.outputs.url }}"
 
-      # - name: Test that mock site is as expected
-      #   run: ./scripts/test-site.sh "${{ steps.provision-infrastructure.outputs.url }}" "$FEATURE_BASIC_AUTH_USER" "$FEATURE_BASIC_AUTH_PASS"
+      - name: Test that mock site is as expected
+        run: ./scripts/test-site.sh "${{ steps.provision-infrastructure.outputs.url }}" "$FEATURE_BASIC_AUTH_USER" "$FEATURE_BASIC_AUTH_PASS"
 
-      # - name: Delete CloudFormation stack
-      #   run: aws cloudformation delete-stack --stack-name 'feature-${{ env.SUBDOMAIN_PREFIX }}'
+      - name: Delete CloudFormation stack
+        run: aws cloudformation delete-stack --stack-name 'feature-${{ env.SUBDOMAIN_PREFIX }}'
