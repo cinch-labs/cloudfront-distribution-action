@@ -32,7 +32,7 @@ const getLambdaARN: GetLambdaARN = async (lambdaStackName) => {
 
     return lambdaARN
   } catch (error) {
-    throw new Error(error)
+    core.setFailed(error)
   }
 }
 
