@@ -1,8 +1,10 @@
+import * as core from '@actions/core'
 import { CloudFormation, Response, AWSError } from 'aws-sdk'
 
 import { getLambdaARN } from './get-lambda-arn'
 
 jest.mock('aws-sdk')
+jest.mock('@actions/core')
 
 const cloudFormationMock = (CloudFormation as unknown) as jest.Mock
 
@@ -39,10 +41,11 @@ describe('getLambdaARN', () => {
     }))
 
     const actualResult = await getLambdaARN(stackName)
-
     const expectedResult = lambdaARN
 
     expect(actualResult).toEqual(expectedResult)
+    expect(core.info).toBeCalledWith(`Getting ARN for Lambda '${stackName}'...`)
+    expect(core.info).toBeCalledWith(`Lambda ARN is ${lambdaARN}`)
   })
 
   it('throws an error when there are no stacks listed for the given stack name', async () => {
@@ -80,5 +83,13 @@ describe('getLambdaARN', () => {
     }))
 
     await expect(getLambdaARN(stackName)).rejects.toThrowError(`No ARN can be found for the lambda ${stackName}`)
+  })
+
+  it('returns an empty string when given an empty string', async () => {
+    const actualResult = await getLambdaARN('')
+    const expectedResult = ''
+
+    expect(actualResult).toEqual(expectedResult)
+    expect(core.info).toBeCalledWith('No rewrite/auth lambda specified. Continuing without...')
   })
 })
