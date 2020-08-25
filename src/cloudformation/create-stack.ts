@@ -30,10 +30,10 @@ const createStack: CreateStack = async (
     const cloudFormation = new CloudFormation({ region: region })
 
     const templateBody = loadYaml('/cloudfront-distribution.yml')
-    const label = `${stackName}-${new Date()}`
+    const stackNameWithTimestamp = `${stackName}-${Math.floor(Date.now() / 1000)}`
 
     const parameters: CloudFormation.Types.CreateStackInput = {
-      Tags: [{ Key: 'label', Value: label }],
+      Tags: [{ Key: 'label', Value: stackNameWithTimestamp }],
       StackName: stackName,
       Parameters: [
         { ParameterKey: 'BucketName', ParameterValue: bucketName },
