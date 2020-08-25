@@ -30,9 +30,10 @@ const createStack: CreateStack = async (
     const cloudFormation = new CloudFormation({ region: region })
 
     const templateBody = loadYaml('/cloudfront-distribution.yml')
+    const label = `${stackName}-${new Date()}`
 
     const parameters: CloudFormation.Types.CreateStackInput = {
-      Tags: [{ Key: 'branch', Value: stackName }],
+      Tags: [{ Key: 'label', Value: label }],
       StackName: stackName,
       Parameters: [
         { ParameterKey: 'BucketName', ParameterValue: bucketName },
@@ -52,14 +53,10 @@ const createStack: CreateStack = async (
     if (stackExists) {
       core.info(`Stack '${stackName}' already exists. Updating...`)
 
-      try {
-        await cloudFormation.updateStack(parameters).promise()
-        await cloudFormation.waitFor('stackUpdateComplete', { StackName: stackName }).promise()
+      await cloudFormation.updateStack(parameters).promise()
+      await cloudFormation.waitFor('stackUpdateComplete', { StackName: stackName }).promise()
 
-        core.info(`Updated stack '${stackName}'`)
-      } catch (error) {
-        core.info('No changes to be made.')
-      }
+      core.info(`Updated stack '${stackName}'`)
     } else {
       core.info(`Creating stack with name '${stackName}'...`)
 
