@@ -51,51 +51,36 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_DEV_DEPLOY_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_DEV_DEPLOY_ACCESS_SECRET }}
-          aws-region: eu-west-1
+      - name: TEST
+        run: echo "${{ github.sha }}"
 
-      - name: Upload a mock site for testing
-        run: ./scripts/create-site.sh "$BUCKET_NAME" "$SUBDIRECTORY_NAME"
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_DEV_DEPLOY_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_DEV_DEPLOY_ACCESS_SECRET }}
+      #     aws-region: eu-west-1
 
-      - name: Create a CloudFormation stack
-        id: create-infrastructure
-        uses: ./
-        with:
-          cloudformation-stack-name: feature-${{ env.SUBDOMAIN_PREFIX }}
-          lambda-stack-name: ${{ env.LAMBDA_STACK_NAME }}
-          route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
-          s3-bucket-name: ${{ env.BUCKET_NAME }}
-          subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}
-          aws-region: eu-west-1
-          subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
+      # - name: Upload a mock site for testing
+      #   run: ./scripts/create-site.sh "$BUCKET_NAME" "$SUBDIRECTORY_NAME"
 
-      - name: Log output URL
-        run: echo "${{ steps.create-infrastructure.outputs.url }}"
+      # - name: Create a CloudFormation stack
+      #   id: create-infrastructure
+      #   uses: ./
+      #   with:
+      #     cloudformation-stack-name: feature-${{ env.SUBDOMAIN_PREFIX }}
+      #     lambda-stack-name: ${{ env.LAMBDA_STACK_NAME }}
+      #     route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
+      #     s3-bucket-name: ${{ env.BUCKET_NAME }}
+      #     subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}
+      #     aws-region: eu-west-1
+      #     subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
 
-      - name: Test that mock site is as expected
-        run: ./scripts/test-site.sh "${{ steps.create-infrastructure.outputs.url }}" "$FEATURE_BASIC_AUTH_USER" "$FEATURE_BASIC_AUTH_PASS"
+      # - name: Log output URL
+      #   run: echo "${{ steps.create-infrastructure.outputs.url }}"
 
-      - name: Update a CloudFormation stack
-        id: update-infrastructure
-        uses: ./
-        with:
-          cloudformation-stack-name: feature-${{ env.SUBDOMAIN_PREFIX }}
-          lambda-stack-name: ${{ env.LAMBDA_STACK_NAME }}
-          route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
-          s3-bucket-name: ${{ env.BUCKET_NAME }}
-          subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}
-          aws-region: eu-west-1
-          subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
+      # - name: Test that mock site is as expected
+      #   run: ./scripts/test-site.sh "${{ steps.create-infrastructure.outputs.url }}" "$FEATURE_BASIC_AUTH_USER" "$FEATURE_BASIC_AUTH_PASS"
 
-      - name: Log output URL with updated stack
-        run: echo "${{ steps.update-infrastructure.outputs.url }}"
-
-      - name: Test that mock site is as expected with updated stack
-        run: ./scripts/test-site.sh "${{ steps.update-infrastructure.outputs.url }}" "$FEATURE_BASIC_AUTH_USER" "$FEATURE_BASIC_AUTH_PASS"
-
-      - name: Delete CloudFormation stack
-        run: aws cloudformation delete-stack --stack-name 'feature-${{ env.SUBDOMAIN_PREFIX }}'
+      # - name: Delete CloudFormation stack
+      #   run: aws cloudformation delete-stack --stack-name 'feature-${{ env.SUBDOMAIN_PREFIX }}'
