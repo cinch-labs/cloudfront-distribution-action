@@ -54,7 +54,12 @@ const createStack: CreateStack = async (
       core.info(`Stack '${stackName}' already exists. Updating...`)
 
       await cloudFormation.updateStack(parameters).promise()
-      await cloudFormation.waitFor('stackUpdateComplete', { StackName: stackName }).promise()
+
+      try {
+        await cloudFormation.waitFor('stackUpdateComplete', { StackName: stackName }).promise()
+      } catch (error) {
+        throw new Error(error)
+      }
 
       core.info(`Updated stack '${stackName}'`)
     } else {
