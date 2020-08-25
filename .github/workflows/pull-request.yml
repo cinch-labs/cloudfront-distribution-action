@@ -56,7 +56,7 @@ jobs:
         run: echo "::set-output name=stackName::$(./scripts/stack-name.sh $SUBDOMAIN_PREFIX ${{ github.sha }})"
 
       - name: TEST
-        echo: echo ${{ steps.generate-stack-name.outputs.stackName }}
+        run: echo ${{ steps.generate-stack-name.outputs.stackName }}
 
       # - name: Configure AWS credentials
       #   uses: aws-actions/configure-aws-credentials@v1
