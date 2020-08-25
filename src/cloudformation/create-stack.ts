@@ -30,9 +30,10 @@ const createStack: CreateStack = async (
     const cloudFormation = new CloudFormation({ region: region })
 
     const templateBody = loadYaml('/cloudfront-distribution.yml')
+    const stackNameWithTimestamp = `${stackName}-${Math.floor(Date.now() / 1000)}`
 
     const parameters: CloudFormation.Types.CreateStackInput = {
-      Tags: [{ Key: 'branch', Value: stackName }],
+      Tags: [{ Key: 'label', Value: stackNameWithTimestamp }],
       StackName: stackName,
       Parameters: [
         { ParameterKey: 'BucketName', ParameterValue: bucketName },
@@ -50,18 +51,24 @@ const createStack: CreateStack = async (
     const stackExists = checkStackExists(availableStacks, stackName)
 
     if (stackExists) {
-      core.info(`Stack '${stackName}' already exists. Continuing...`)
+      core.info(`Stack '${stackName}' already exists. Updating...`)
+
+      await cloudFormation.updateStack(parameters).promise()
+      await cloudFormation.waitFor('stackUpdateComplete', { StackName: stackName }).promise()
+
+      core.info(`Updated stack '${stackName}'`)
     } else {
       core.info(`Creating stack with name '${stackName}'...`)
-      await cloudFormation.createStack(parameters).promise()
 
+      await cloudFormation.createStack(parameters).promise()
       await cloudFormation.waitFor('stackCreateComplete', { StackName: stackName }).promise()
+
       core.info(`Completed stack creation for '${stackName}'`)
     }
 
     core.setOutput('url', `https://${fullDomain}`)
   } catch (error) {
-    core.setFailed(error)
+    throw new Error(error)
   }
 }
 
