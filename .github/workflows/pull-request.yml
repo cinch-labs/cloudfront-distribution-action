@@ -51,8 +51,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Generate stack name
+        id: generate-stack-name
+        run: echo "::set-output name=stackName::$(./scripts/stack-name.sh $SUBDOMAIN_PREFIX ${{ github.sha }})"
+
       - name: TEST
-        run: echo "${{ github.sha }}"
+        echo: echo ${{ steps.generate-stack-name.outputs.stackName }}
 
       # - name: Configure AWS credentials
       #   uses: aws-actions/configure-aws-credentials@v1
