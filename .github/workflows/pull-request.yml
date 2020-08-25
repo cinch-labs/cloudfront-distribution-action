@@ -73,6 +73,12 @@ jobs:
           aws-region: eu-west-1
           subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
 
+      - name: Log output URL
+        run: echo "${{ steps.create-infrastructure.outputs.url }}"
+
+      - name: Test that mock site is as expected
+        run: ./scripts/test-site.sh "${{ steps.create-infrastructure.outputs.url }}" "$FEATURE_BASIC_AUTH_USER" "$FEATURE_BASIC_AUTH_PASS"
+
       - name: Update a CloudFormation stack
         id: update-infrastructure
         uses: ./
@@ -85,10 +91,10 @@ jobs:
           aws-region: eu-west-1
           subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
 
-      - name: Log output URL
+      - name: Log output URL with updated stack
         run: echo "${{ steps.update-infrastructure.outputs.url }}"
 
-      - name: Test that mock site is as expected
+      - name: Test that mock site is as expected with updated stack
         run: ./scripts/test-site.sh "${{ steps.update-infrastructure.outputs.url }}" "$FEATURE_BASIC_AUTH_USER" "$FEATURE_BASIC_AUTH_PASS"
 
       - name: Delete CloudFormation stack
