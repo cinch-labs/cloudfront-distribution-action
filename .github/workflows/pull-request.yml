@@ -85,3 +85,6 @@ jobs:
 
       - name: Delete CloudFormation stack
         run: aws cloudformation delete-stack --stack-name '${{ steps.generate-stack-name.outputs.stackName }}'
+
+      - name: Delete mock site
+        run: ./scripts/delete-site.sh "$BUCKET_NAME" "$SUBDIRECTORY_NAME"
