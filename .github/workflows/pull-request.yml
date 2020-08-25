@@ -75,7 +75,7 @@ jobs:
           s3-bucket-name: ${{ env.BUCKET_NAME }}
           subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}
           aws-region: eu-west-1
-          subdomain-prefix: ${{ env.SUBDOMAIN_PREFIX }}
+          subdomain-prefix: ${{ steps.generate-stack-name.outputs.stackName }}
 
       - name: Log output URL
         run: echo "${{ steps.create-infrastructure.outputs.url }}"
