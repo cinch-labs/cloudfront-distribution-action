@@ -46,7 +46,7 @@ jobs:
       FEATURE_BASIC_AUTH_USER: ${{ secrets.FEATURE_BASIC_AUTH_USER }}
       FEATURE_BASIC_AUTH_PASS: ${{ secrets.FEATURE_BASIC_AUTH_PASS }}
       LAMBDA_STACK_NAME: ${{ secrets.LAMBDA_STACK_NAME }}
-      ROUTE_53_ZONE_NAME: ${{ secrets.ROUTE_53_ZONE_NAME }}
+      ROUTE_53_ZONE_NAME: stuff.bits.cinch.co.uk
 
     steps:
       - uses: actions/checkout@v2
