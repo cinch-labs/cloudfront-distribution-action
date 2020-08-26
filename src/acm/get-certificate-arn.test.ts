@@ -1,50 +1,43 @@
 // import * as core from '@actions/core'
-// import { CloudFormation, Response, AWSError } from 'aws-sdk'
+import { ACM, Response, AWSError } from 'aws-sdk'
 
-// import { getCertificateARN } from './get-certificate-arn'
+import { getCertificateARN } from './get-certificate-arn'
 
-// jest.mock('aws-sdk')
+jest.mock('aws-sdk')
 // jest.mock('@actions/core')
 
-// const cloudFormationMock = (CloudFormation as unknown) as jest.Mock
+const acmMock = (ACM as unknown) as jest.Mock
 
-// afterEach(() => {
-//   cloudFormationMock.mockClear()
-// })
+afterEach(() => {
+  acmMock.mockClear()
+})
 
-// describe('getCertificateARN', () => {
-//   const stackName = 'stack-of-llamas'
-//   const lambdaARN = 'abc123'
+describe('getCertificateARN', () => {
+  const route53ZoneName = 'llamas.cinch.co.uk'
+  const hasSubdomainPrefix = true
 
-//   it('returns the correct Certificate ARN when given a valid Route53 zone name', async () => {
-//     const describeStacks = jest.fn().mockReturnValue({
-//       promise: jest.fn().mockResolvedValue({
-//         Stacks: [
-//           {
-//             StackName: stackName,
-//             StackStatus: 'CREATE_IN_PROGRESS',
-//             CreationTime: new Date(),
-//             Outputs: [
-//               {
-//                 OutputKey: 'LambdaARN',
-//                 OutputValue: lambdaARN,
-//               },
-//             ],
-//           },
-//         ],
-//         $response: {} as Response<unknown, AWSError>,
-//       }),
-//     })
+  const certificateARN = 'abc-123'
 
-//     cloudFormationMock.mockImplementationOnce(() => ({
-//       describeStacks,
-//     }))
+  it('returns the correct Certificate ARN when given a valid Route53 zone name and specifies subdomain prefix', async () => {
+    const listCertificates = jest.fn().mockReturnValue({
+      promise: jest.fn().mockResolvedValue({
+        CertificateSummaryList: [
+          {
+            CertificateArn: certificateARN,
+            DomainName: '*.llamas.cinch.co.uk',
+          },
+        ],
+        $response: {} as Response<unknown, AWSError>,
+      }),
+    })
 
-//     const actualResult = await getCertificateARN(stackName)
-//     const expectedResult = lambdaARN
+    acmMock.mockImplementationOnce(() => ({
+      listCertificates,
+    }))
 
-//     expect(actualResult).toEqual(expectedResult)
-//     expect(core.info).toBeCalledWith(`Getting ARN for Lambda '${stackName}'...`)
-//     expect(core.info).toBeCalledWith(`Lambda ARN is ${lambdaARN}`)
-//   })
-// })
+    const actualResult = await getCertificateARN(route53ZoneName, hasSubdomainPrefix)
+    const expectedResult = certificateARN
+
+    expect(actualResult).toEqual(expectedResult)
+  })
+})

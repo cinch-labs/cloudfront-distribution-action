@@ -9,9 +9,9 @@ const getCertificateARN: GetCertificateARN = async (route53ZoneName, certificate
   try {
     core.info(`Getting Certificate ARN for Route53Zone '${route53ZoneName}'...`)
 
-    const certificates = await acm.listCertificates().promise()
+    console.log(acm)
 
-    console.log(certificates)
+    const certificates = await acm.listCertificates().promise()
 
     const certificateDomainFromInput = certificateHasWildcardPrefix ? `*.${route53ZoneName}` : route53ZoneName
 
@@ -27,7 +27,7 @@ const getCertificateARN: GetCertificateARN = async (route53ZoneName, certificate
 
     return certificateARN
   } catch (error) {
-    throw new Error(error)
+    core.error(error)
   }
 }
 
