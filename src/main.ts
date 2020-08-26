@@ -26,7 +26,7 @@ async function run(): Promise<void> {
 
     await waitForStack(stackStatus!, cfStackName)
 
-    createStack(
+    await createStack(
       awsRegion,
       cfStackName,
       s3BucketName,

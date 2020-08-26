@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import { CloudFormation } from 'aws-sdk'
 
-import { loadYaml, checkStackExists } from '../utils'
+import { loadYaml } from '../utils'
 
 type CreateStack = (
   region: string,
