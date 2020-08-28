@@ -50,7 +50,7 @@ Resources:
           DefaultTTL: 300
           MaxTTL: 300
           ForwardedValues:
-            QueryString: true
+            QueryString: false
           LambdaFunctionAssociations:
             - EventType: viewer-request
               LambdaFunctionARN: !Ref WebsiteCloudFrontViewerRequestLambdaFunctionARN
