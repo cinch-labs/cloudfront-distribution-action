@@ -41,7 +41,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
-      SUBDIRECTORY_NAME: github-action-integration-test
       SUBDOMAIN_PREFIX: github-action-integration-test
       FEATURE_BASIC_AUTH_USER: ${{ secrets.FEATURE_BASIC_AUTH_USER }}
       FEATURE_BASIC_AUTH_PASS: ${{ secrets.FEATURE_BASIC_AUTH_PASS }}
@@ -63,7 +62,7 @@ jobs:
           aws-region: eu-west-1
 
       - name: Upload a mock site for testing
-        run: ./scripts/create-site.sh "$BUCKET_NAME" "$SUBDIRECTORY_NAME"
+        run: ./scripts/create-site.sh "${{ env.BUCKET_NAME }}" "${{ steps.generate-stack-name.outputs.stackName }}"
 
       - name: Create a CloudFormation stack
         id: create-infrastructure
@@ -73,7 +72,7 @@ jobs:
           lambda-stack-name: ${{ env.LAMBDA_STACK_NAME }}
           route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
           s3-bucket-name: ${{ env.BUCKET_NAME }}
-          subdirectory-name: ${{ env.SUBDIRECTORY_NAME }}
+          subdirectory-name: ${{ steps.generate-stack-name.outputs.stackName }}
           aws-region: eu-west-1
           subdomain-prefix: ${{ steps.generate-stack-name.outputs.stackName }}
 
@@ -87,4 +86,4 @@ jobs:
         run: aws cloudformation delete-stack --stack-name '${{ steps.generate-stack-name.outputs.stackName }}'
 
       - name: Delete mock site
-        run: ./scripts/delete-site.sh "$BUCKET_NAME" "$SUBDIRECTORY_NAME"
+        run: ./scripts/delete-site.sh "${{ env.BUCKET_NAME }}" "${{ steps.generate-stack-name.outputs.stackName }}"
