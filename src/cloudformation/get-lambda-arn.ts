@@ -8,7 +8,7 @@ const getLambdaARN: GetLambdaARN = async (lambdaStackName) => {
     const cloudFormation = new CloudFormation({ region: 'us-east-1' })
 
     if (lambdaStackName.length <= 0) {
-      core.info('No rewrite/auth lambda specified. Continuing without...')
+      core.info('No lambda specified. Continuing without...')
       return lambdaStackName
     }
 
