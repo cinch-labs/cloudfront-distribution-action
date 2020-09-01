@@ -21,6 +21,10 @@ Parameters:
     Type: String
     Description: ARN of the Lambda@Edge function that provides basic auth and does rewriting of URLs (must be in us-east-1). See index.js
     Default: ''
+  WebsiteCloudFrontOriginResponseLambdaFunctionARN:
+    Type: String
+    Description: ARN of the Lambda@Edge function that handles origin response
+    Default: ''
   OriginAccessIdentityARN:
     Type: String
     Description: ARN of the OAI allowing access to the bucket resources
@@ -57,6 +61,8 @@ Resources:
           LambdaFunctionAssociations:
             - EventType: viewer-request
               LambdaFunctionARN: !Ref WebsiteCloudFrontViewerRequestLambdaFunctionARN
+            - EventType: origin-response
+              LambdaFunctionARN: !Ref WebsiteCloudFrontOriginResponseLambdaFunctionARN
         Enabled: true
         HttpVersion: http2
         DefaultRootObject: index.html
