@@ -44,7 +44,8 @@ jobs:
       SUBDOMAIN_PREFIX: github-action-integration-test
       FEATURE_BASIC_AUTH_USER: ${{ secrets.FEATURE_BASIC_AUTH_USER }}
       FEATURE_BASIC_AUTH_PASS: ${{ secrets.FEATURE_BASIC_AUTH_PASS }}
-      LAMBDA_STACK_NAME: ${{ secrets.LAMBDA_STACK_NAME }}
+      VIEWER_REQUEST_LAMBDA_STACK_NAME: ${{ secrets.VIEWER_REQUEST_LAMBDA_STACK_NAME }}
+      ORIGIN_RESPONSE_LAMBDA_STACK_NAME: ${{ secrets.ORIGIN_RESPONSE_LAMBDA_STACK_NAME }}
       ROUTE_53_ZONE_NAME: ${{ secrets.ROUTE_53_ZONE_NAME }}
 
     steps:
@@ -69,7 +70,8 @@ jobs:
         uses: ./
         with:
           cloudformation-stack-name: ${{ steps.generate-stack-name.outputs.stackName }}
-          lambda-stack-name: ${{ env.LAMBDA_STACK_NAME }}
+          viewer-request-lambda-stack-name: ${{ env.VIEWER_REQUEST_LAMBDA_STACK_NAME }}
+          origin-response-lambda-stack-name: ${{ env.ORIGIN_RESPONSE_LAMBDA_STACK_NAME }}
           route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
           s3-bucket-name: ${{ env.BUCKET_NAME }}
           subdirectory-name: ${{ steps.generate-stack-name.outputs.stackName }}
