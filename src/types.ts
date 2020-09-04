@@ -6,4 +6,5 @@ export enum Input {
   SUBDIRECTORY_NAME = 'subdirectory-name',
   AWS_REGION = 'aws-region',
   SUBDOMAIN_PREFIX = 'subdomain-prefix',
+  WEB_ACL_ID = 'web-acl-id',
 }

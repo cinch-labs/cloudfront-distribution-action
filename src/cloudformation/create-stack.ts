@@ -13,6 +13,7 @@ type CreateStack = (
   certificateARN: string,
   oaiARN: string,
   fullDomain: string,
+  webAclId: string,
 ) => Promise<void>
 
 const createStack: CreateStack = async (
@@ -25,6 +26,7 @@ const createStack: CreateStack = async (
   certificateARN,
   oaiARN,
   fullDomain,
+  webAclId,
 ) => {
   try {
     const cloudFormation = new CloudFormation({ region: region })
@@ -43,6 +45,7 @@ const createStack: CreateStack = async (
         { ParameterKey: 'WebsiteCloudFrontViewerRequestLambdaFunctionARN', ParameterValue: lambdaARN },
         { ParameterKey: 'OriginAccessIdentityARN', ParameterValue: oaiARN },
         { ParameterKey: 'CloudFrontAlias', ParameterValue: fullDomain },
+        { ParameterKey: 'WebACLId', ParameterValue: webAclId },
       ],
       TemplateBody: templateBody,
     }
