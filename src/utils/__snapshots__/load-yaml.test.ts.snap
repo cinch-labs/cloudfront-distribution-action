@@ -27,10 +27,15 @@ Parameters:
   CloudFrontAlias:
     Type: String
     Description: Full domain name for CloudFront
+  WebACLId:
+    Type: String
+    Description: Arn of AWS WAF web ACL
+    Default: ''
 
 Conditions:
   HasLambdaARN: !Not [!Equals [!Ref WebsiteCloudFrontViewerRequestLambdaFunctionARN, '']]
   HasNoLambdaARN: !Equals [!Ref WebsiteCloudFrontViewerRequestLambdaFunctionARN, '']
+  HasWebACLSpecified: !Not [!Equals [!Ref WebACLId, '']]
 
 Resources:
   WebsiteCloudfrontWithLambda:
@@ -72,6 +77,12 @@ Resources:
             ResponseCode: 404
             ResponsePagePath: '/error/index.html'
         PriceClass: PriceClass_100
+        WebACLId:
+          Fn::If:
+            - HasWebACLSpecified
+            - !Ref WebACLId
+            - !Ref AWS::NoValue
+
       Tags:
         - Key: Name
           Value: !Join [' ', [!Ref BucketName, !Ref SubdirectoryName]]
@@ -112,6 +123,12 @@ Resources:
             ResponseCode: 404
             ResponsePagePath: '/error/index.html'
         PriceClass: PriceClass_100
+        WebACLId:
+          Fn::If:
+            - HasWebACLSpecified
+            - !Ref WebACLId
+            - !Ref AWS::NoValue
+
       Tags:
         - Key: Name
           Value: !Join [' ', [!Ref BucketName, !Ref SubdirectoryName]]

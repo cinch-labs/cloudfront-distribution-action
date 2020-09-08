@@ -25,6 +25,10 @@ inputs:
     required: false
     description: 'If you need to prefix your Route53 zone with a subdomain'
     default: ''
+  web-acl-id:
+    required: false
+    description: 'The Web ACL ID - see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-webaclid for full information on this parameter'
+    default: ''
 runs:
   using: 'node12'
   main: 'dist/index.js'

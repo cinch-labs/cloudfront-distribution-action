@@ -17,6 +17,7 @@ async function run(): Promise<void> {
     const subdirectoryName = checkInputContent(core.getInput(Input.SUBDIRECTORY_NAME), Input.SUBDIRECTORY_NAME)
     const awsRegion = checkInputContent(core.getInput(Input.AWS_REGION), Input.AWS_REGION)
     const subdomainPrefix = core.getInput(Input.SUBDOMAIN_PREFIX)
+    const webAclId = core.getInput(Input.WEB_ACL_ID)
 
     const route53ZoneID = await getRoute53ZoneID(route53ZoneName)
     const oaiArn = await getOaiArn(s3BucketName)
@@ -36,6 +37,7 @@ async function run(): Promise<void> {
       certificateARN!,
       oaiArn!,
       getFullDomain(subdomainPrefix, route53ZoneName),
+      webAclId!,
     )
   } catch (error) {
     core.setFailed(error.message)
