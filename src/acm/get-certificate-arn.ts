@@ -19,7 +19,7 @@ type GetCertificateARN = (
   certificateName: string,
 ) => Promise<string | undefined>
 
-const getCertificateARN: GetCertificateARN = async (route53ZoneName, certificateHasWildcardPrefix, certificateName) => {
+const getCertificateARN: GetCertificateARN = async (certificateName, certificateHasWildcardPrefix, route53ZoneName) => {
   try {
     core.info(`Getting Certificate ARN for Route53Zone '${route53ZoneName}'...`)
 
