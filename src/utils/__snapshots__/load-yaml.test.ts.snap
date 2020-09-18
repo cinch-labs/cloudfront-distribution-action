@@ -75,7 +75,10 @@ Resources:
         CustomErrorResponses:
           - ErrorCode: 403
             ResponseCode: 404
-            ResponsePagePath: '/error/index.html'
+            ResponsePagePath: '/404.html'
+          - ErrorCode: 404
+            ResponseCode: 404
+            ResponsePagePath: '/404.html'
         PriceClass: PriceClass_100
         WebACLId:
           Fn::If:
