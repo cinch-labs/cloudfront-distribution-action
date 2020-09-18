@@ -63,6 +63,18 @@ This is the AWS region used when creating your CloudFormation stack. It must be 
 
 This is required if your deployment requires prefixing your Route53 zone with a subdomain. If you specify this, your SSL certificate will have a wildcard prefix.
 
+### `certificate-name`
+
+**Required**: `false`
+
+This is required if your deployment requires manually specifying a certificate name. Should not be needed in most cases.
+
+### `web-acl-id`
+
+**Required**: `false`
+
+The Web ACL ID - see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-webaclid for full information on this parameter.
+
 ## Development
 
 Install the dependencies
