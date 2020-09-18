@@ -18,11 +18,12 @@ async function run(): Promise<void> {
     const awsRegion = checkInputContent(core.getInput(Input.AWS_REGION), Input.AWS_REGION)
     const subdomainPrefix = core.getInput(Input.SUBDOMAIN_PREFIX)
     const webAclId = core.getInput(Input.WEB_ACL_ID)
+    const certificateName = core.getInput(Input.CERTIFICATE_NAME)
 
     const route53ZoneID = await getRoute53ZoneID(route53ZoneName)
     const oaiArn = await getOaiArn(s3BucketName)
     const lambdaARN = await getLambdaARN(lambdaStackName)
-    const certificateARN = await getCertificateARN(route53ZoneName, subdomainPrefix.length >= 1)
+    const certificateARN = await getCertificateARN(route53ZoneName, subdomainPrefix.length >= 1, certificateName)
     const stackStatus = await getCFStackStatus(cfStackName)
 
     await waitForStack(stackStatus!, cfStackName)
