@@ -144,7 +144,7 @@ Resources:
     Condition: CreatesARecord
     Properties:
       HostedZoneId: !Ref Route53ZoneId
-      Name: !Ref CloudFrontAlias
+      Name: !Select ['0', !Ref CloudFrontAlias]
       Type: A
       AliasTarget:
         HostedZoneId: Z2FDTNDATAQYW2 # Default/public - this is always the hostedZoneId for CloudFormation (see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget-1.html#cfn-route53-aliastarget-hostedzoneid)
@@ -157,4 +157,4 @@ Outputs:
     Value: !If [HasLambdaARN, !GetAtt WebsiteCloudfrontWithLambda.DomainName, !GetAtt WebsiteCloudfrontWithoutLambda.DomainName]
   WebsiteAlias:
     Description: WebsiteAlias
-    Value: !Ref CloudFrontAlias
+    Value: !Select ['0', !Ref CloudFrontAlias]
