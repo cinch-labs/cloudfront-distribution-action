@@ -5,6 +5,14 @@ inputs:
   cloudformation-stack-name:
     required: true
     description: 'The cloudformation stack for the deployment'
+  a-record-name:
+    required: false
+    description: 'The name of the A record to be created if required'
+    default: ''
+  cloudfront-aliases:
+    required: true
+    description: 'A comma separated list of the aliases to associate with the cloudfront distribution. The first item in the list will be used as the output of the action.'
+    default: ''
   lambda-stack-name:
     required: false
     description: 'The stack name of the rewrite/auth lambda for the deployment'
@@ -21,10 +29,6 @@ inputs:
   aws-region:
     required: true
     description: 'The AWS region where cloudformation stack will be deployed to'
-  subdomain-prefix:
-    required: false
-    description: 'If you need to prefix your Route53 zone with a subdomain'
-    default: ''
   certificate-name:
     required: false
     description: 'If you want to manually specify a certificate name'
@@ -33,10 +37,7 @@ inputs:
     required: false
     description: 'The Web ACL ID - see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-webaclid for full information on this parameter'
     default: ''
-  requires-a-record:
-    required: false
-    description: 'Determines whether or not an A record should be created for the given domain'
-    default: 'true'
+
 runs:
   using: 'node12'
   main: 'dist/index.js'

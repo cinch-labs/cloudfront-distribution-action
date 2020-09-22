@@ -74,7 +74,8 @@ jobs:
           s3-bucket-name: ${{ env.BUCKET_NAME }}
           subdirectory-name: ${{ steps.generate-stack-name.outputs.stackName }}
           aws-region: eu-west-1
-          subdomain-prefix: ${{ steps.generate-stack-name.outputs.stackName }}
+          a-record-name: ${{ steps.generate-stack-name.outputs.stackName }}.cinch.co.uk
+          cloudfront-aliases: ${{ steps.generate-stack-name.outputs.stackName }}.cinch.co.uk
 
       - name: Log output URL
         run: echo "${{ steps.create-infrastructure.outputs.url }}"
