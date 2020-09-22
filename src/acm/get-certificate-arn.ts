@@ -11,9 +11,11 @@ const getCertificateARN: GetCertificateARN = async (certificateName) => {
 
     const certificates = await acm.listCertificates().promise()
 
-    const certificateARN = certificates.CertificateSummaryList?.filter(
-      (certificate) => certificate.DomainName === certificateName,
-    )[0]?.CertificateArn
+    const certificateARN = certificates.CertificateSummaryList?.filter((certificate) => {
+      console.log(certificate.DomainName)
+
+      return certificate.DomainName === certificateName
+    })[0]?.CertificateArn
 
     if (!certificateARN) {
       throw new Error(`No ARN can be found for certificate '${certificateName}'`)
