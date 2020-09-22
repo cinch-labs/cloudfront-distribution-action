@@ -31,11 +31,16 @@ Parameters:
     Type: String
     Description: Arn of AWS WAF web ACL
     Default: ''
+  RequiresARecordCreation:
+    Type: String
+    Description: Determines whether an A record should be created for the given CloudFrontAlias parameter
+    Default: 'true'
 
 Conditions:
   HasLambdaARN: !Not [!Equals [!Ref WebsiteCloudFrontViewerRequestLambdaFunctionARN, '']]
   HasNoLambdaARN: !Equals [!Ref WebsiteCloudFrontViewerRequestLambdaFunctionARN, '']
   HasWebACLSpecified: !Not [!Equals [!Ref WebACLId, '']]
+  CreatesARecord: !Equals [!Ref RequiresARecordCreation, 'true']
 
 Resources:
   WebsiteCloudfrontWithLambda:
@@ -141,6 +146,7 @@ Resources:
 
   BranchWWWAlias:
     Type: AWS::Route53::RecordSet
+    Condition: CreatesARecord
     Properties:
       HostedZoneId: !Ref Route53ZoneId
       Name: !Ref CloudFrontAlias
