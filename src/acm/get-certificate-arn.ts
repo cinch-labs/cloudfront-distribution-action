@@ -3,31 +3,16 @@ import { ACM } from 'aws-sdk'
 
 const acm = new ACM({ region: 'us-east-1' })
 
-type GetCertificateName = (certificateName: string, certificateHasWildcardPrefix: boolean, route53ZoneName: string) => string
+type GetCertificateARN = (route53ZoneName: string, certificateName: string) => Promise<string | undefined>
 
-export const getCertificateName: GetCertificateName = (certificateName, certificateHasWildcardPrefix, route53ZoneName) => {
-  if (certificateName.length > 0) {
-    return certificateName
-  }
-
-  return certificateHasWildcardPrefix ? `*.${route53ZoneName}` : route53ZoneName
-}
-
-type GetCertificateARN = (
-  route53ZoneName: string,
-  certificateHasWildcardPrefix: boolean,
-  certificateName: string,
-) => Promise<string | undefined>
-
-const getCertificateARN: GetCertificateARN = async (certificateName, certificateHasWildcardPrefix, route53ZoneName) => {
+const getCertificateARN: GetCertificateARN = async (certificateName, route53ZoneName) => {
   try {
     core.info(`Getting Certificate ARN for Route53Zone '${route53ZoneName}'...`)
 
     const certificates = await acm.listCertificates().promise()
 
     const certificateARN = certificates.CertificateSummaryList?.filter(
-      (certificate) =>
-        certificate.DomainName === getCertificateName(certificateName, certificateHasWildcardPrefix, route53ZoneName),
+      (certificate) => certificate.DomainName === certificateName,
     )[0]?.CertificateArn
 
     if (!certificateARN) {
