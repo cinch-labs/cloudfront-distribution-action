@@ -70,10 +70,11 @@ jobs:
         with:
           cloudformation-stack-name: ${{ steps.generate-stack-name.outputs.stackName }}
           lambda-stack-name: ${{ env.LAMBDA_STACK_NAME }}
-          route-53-zone-name: cinch.co.uk
+          route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
           s3-bucket-name: ${{ env.BUCKET_NAME }}
           subdirectory-name: ${{ steps.generate-stack-name.outputs.stackName }}
           aws-region: eu-west-1
+          certificate-name: ${{ env.ROUTE_53_ZONE_NAME }}
           a-record-name: ${{ steps.generate-stack-name.outputs.stackName }}.cinch.co.uk
           cloudfront-aliases: ${{ steps.generate-stack-name.outputs.stackName }}.cinch.co.uk
 

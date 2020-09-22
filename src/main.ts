@@ -24,7 +24,7 @@ async function run(): Promise<void> {
     const route53ZoneID = await getRoute53ZoneID(route53ZoneName)
     const oaiArn = await getOaiArn(s3BucketName)
     const lambdaARN = await getLambdaARN(lambdaStackName)
-    const certificateARN = await getCertificateARN(certificateName, route53ZoneName)
+    const certificateARN = await getCertificateARN(certificateName)
     const stackStatus = await getCFStackStatus(cfStackName)
 
     await waitForStack(stackStatus!, cfStackName)

@@ -3,11 +3,11 @@ import { ACM } from 'aws-sdk'
 
 const acm = new ACM({ region: 'us-east-1' })
 
-type GetCertificateARN = (route53ZoneName: string, certificateName: string) => Promise<string | undefined>
+type GetCertificateARN = (certificateName: string) => Promise<string | undefined>
 
-const getCertificateARN: GetCertificateARN = async (certificateName, route53ZoneName) => {
+const getCertificateARN: GetCertificateARN = async (certificateName) => {
   try {
-    core.info(`Getting Certificate ARN for Route53Zone '${route53ZoneName}'...`)
+    core.info(`Getting ARN for certificate '${certificateName}'...`)
 
     const certificates = await acm.listCertificates().promise()
 
@@ -16,7 +16,7 @@ const getCertificateARN: GetCertificateARN = async (certificateName, route53Zone
     )[0]?.CertificateArn
 
     if (!certificateARN) {
-      throw new Error(`No ARN can be found for domain '${route53ZoneName}'`)
+      throw new Error(`No ARN can be found for certificate '${certificateName}'`)
     }
 
     core.info(`Certificate ARN is ${certificateARN}`)
