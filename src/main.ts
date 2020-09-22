@@ -19,7 +19,7 @@ async function run(): Promise<void> {
     const subdomainPrefix = core.getInput(Input.SUBDOMAIN_PREFIX)
     const webAclId = core.getInput(Input.WEB_ACL_ID)
     const certificateName = core.getInput(Input.CERTIFICATE_NAME)
-    const requiresARecord = core.getInput(Input.REQUIRES_A_RECORD) === 'false' ? 'false' : 'true'
+    const requiresARecord = core.getInput(Input.REQUIRES_A_RECORD)
 
     const route53ZoneID = await getRoute53ZoneID(route53ZoneName)
     const oaiArn = await getOaiArn(s3BucketName)

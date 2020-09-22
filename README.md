@@ -75,6 +75,12 @@ This is required if your deployment requires manually specifying a certificate n
 
 The Web ACL ID - see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-webaclid for full information on this parameter.
 
+### `requires-a-record`
+
+**Required**: `false`
+
+Determines whether or not an A record should be created for the given domain. If nothing is specified it will default to `true`.
+
 ## Development
 
 Install the dependencies

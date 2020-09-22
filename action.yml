@@ -33,6 +33,10 @@ inputs:
     required: false
     description: 'The Web ACL ID - see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-webaclid for full information on this parameter'
     default: ''
+  requires-a-record:
+    required: false
+    description: 'Determines whether or not an A record should be created for the given domain'
+    default: 'true'
 runs:
   using: 'node12'
   main: 'dist/index.js'
