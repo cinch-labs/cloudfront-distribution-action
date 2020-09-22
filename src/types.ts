@@ -8,4 +8,5 @@ export enum Input {
   SUBDOMAIN_PREFIX = 'subdomain-prefix',
   WEB_ACL_ID = 'web-acl-id',
   CERTIFICATE_NAME = 'certificate-name',
+  REQUIRES_A_RECORD = 'requires-a-record',
 }
