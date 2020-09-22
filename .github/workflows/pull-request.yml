@@ -74,9 +74,9 @@ jobs:
           s3-bucket-name: ${{ env.BUCKET_NAME }}
           subdirectory-name: ${{ steps.generate-stack-name.outputs.stackName }}
           aws-region: eu-west-1
-          certificate-name: '*.feature.aws.cinch.co.uk'
-          a-record-name: ${{ steps.generate-stack-name.outputs.stackName }}.feature.aws.cinch.co.uk
-          cloudfront-aliases: ${{ steps.generate-stack-name.outputs.stackName }}.feature.aws.cinch.co.uk
+          certificate-name: '*.${{ env.ROUTE_53_ZONE_NAME }}'
+          a-record-name: ${{ steps.generate-stack-name.outputs.stackName }}.${{ env.ROUTE_53_ZONE_NAME }}
+          cloudfront-aliases: ${{ steps.generate-stack-name.outputs.stackName }}.${{ env.ROUTE_53_ZONE_NAME }}
 
       - name: Log output URL
         run: echo "${{ steps.create-infrastructure.outputs.url }}"
