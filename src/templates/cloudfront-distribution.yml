@@ -21,18 +21,23 @@ Parameters:
   OriginAccessIdentityARN:
     Type: String
     Description: ARN of the OAI allowing access to the bucket resources
-  CloudFrontAlias:
-    Type: String
+  CloudFrontAliases:
+    Type: CommaDelimitedList
     Description: Full domain name for CloudFront
   WebACLId:
     Type: String
     Description: Arn of AWS WAF web ACL
+    Default: ''
+  ARecordName:
+    Type: String
+    Description: Name given to the A record
     Default: ''
 
 Conditions:
   HasLambdaARN: !Not [!Equals [!Ref WebsiteCloudFrontViewerRequestLambdaFunctionARN, '']]
   HasNoLambdaARN: !Equals [!Ref WebsiteCloudFrontViewerRequestLambdaFunctionARN, '']
   HasWebACLSpecified: !Not [!Equals [!Ref WebACLId, '']]
+  CreatesARecord: !Not [!Equals [!Ref ARecordName, '']]
 
 Resources:
   WebsiteCloudfrontWithLambda:
@@ -63,8 +68,7 @@ Resources:
         HttpVersion: http2
         DefaultRootObject: index.html
         IPV6Enabled: true
-        Aliases:
-          - !Ref CloudFrontAlias
+        Aliases: !Ref CloudFrontAliases
         ViewerCertificate:
           AcmCertificateArn: !Ref CertificateARN
           MinimumProtocolVersion: TLSv1.2_2018
@@ -112,8 +116,7 @@ Resources:
         HttpVersion: http2
         DefaultRootObject: index.html
         IPV6Enabled: true
-        Aliases:
-          - !Ref CloudFrontAlias
+        Aliases: !Ref CloudFrontAliases
         ViewerCertificate:
           AcmCertificateArn: !Ref CertificateARN
           MinimumProtocolVersion: TLSv1.2_2018
@@ -138,9 +141,10 @@ Resources:
 
   BranchWWWAlias:
     Type: AWS::Route53::RecordSet
+    Condition: CreatesARecord
     Properties:
       HostedZoneId: !Ref Route53ZoneId
-      Name: !Ref CloudFrontAlias
+      Name: !Ref ARecordName
       Type: A
       AliasTarget:
         HostedZoneId: Z2FDTNDATAQYW2 # Default/public - this is always the hostedZoneId for CloudFormation (see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget-1.html#cfn-route53-aliastarget-hostedzoneid)
@@ -153,4 +157,4 @@ Outputs:
     Value: !If [HasLambdaARN, !GetAtt WebsiteCloudfrontWithLambda.DomainName, !GetAtt WebsiteCloudfrontWithoutLambda.DomainName]
   WebsiteAlias:
     Description: WebsiteAlias
-    Value: !Ref CloudFrontAlias
+    Value: !Select ['0', !Ref CloudFrontAliases]
