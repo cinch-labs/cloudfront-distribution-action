@@ -61,7 +61,7 @@ Resources:
           Compress: true
           MinTTL: 0
           DefaultTTL: 300
-          MaxTTL: 300
+          MaxTTL: 2419200
           ForwardedValues:
             QueryString: false
           LambdaFunctionAssociations:
