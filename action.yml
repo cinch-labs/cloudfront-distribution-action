@@ -5,9 +5,14 @@ inputs:
   cloudformation-stack-name:
     required: true
     description: 'The cloudformation stack for the deployment'
-  viewer-request-lambda-stack-name:
+  lambda-stack-name:
     required: false
     description: 'The stack name of the rewrite/auth lambda for the deployment'
+    default: ''
+    deprecationMessage: 'This field is deprecated, please use viewer-request-lambda-stack-name instead'
+  viewer-request-lambda-stack-name:
+    required: false
+    description: 'The stack name of the viewer request lambda for the deployment'
     default: ''
   origin-response-lambda-stack-name:
     required: false

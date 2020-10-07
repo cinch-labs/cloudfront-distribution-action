@@ -11,6 +11,7 @@ import { getCertificateARN } from './acm'
 async function run(): Promise<void> {
   try {
     const cfStackName = checkInputContent(core.getInput(Input.CLOUDFORMATION_STACK_NAME), Input.CLOUDFORMATION_STACK_NAME)
+    const deprecatedLambdaStackName = core.getInput(Input.LAMBDA_STACK_NAME)
     const viewerRequestLambdaStackName = core.getInput(Input.VIEWER_REQUEST_LAMBDA_STACK_NAME)
     const originResponseLambdaStackName = core.getInput(Input.ORIGIN_RESPONSE_LAMBDA_STACK_NAME)
     const route53ZoneName = checkInputContent(core.getInput(Input.ROUTE_53_ZONE_NAME), Input.ROUTE_53_ZONE_NAME)
@@ -21,7 +22,7 @@ async function run(): Promise<void> {
 
     const route53ZoneID = await getRoute53ZoneID(route53ZoneName)
     const oaiArn = await getOaiArn(s3BucketName)
-    const viewerRequestLambdaARN = await getLambdaARN(viewerRequestLambdaStackName)
+    const viewerRequestLambdaARN = await getLambdaARN(viewerRequestLambdaStackName ?? deprecatedLambdaStackName)
     const originResponseLambdaARN = await getLambdaARN(originResponseLambdaStackName)
     const certificateARN = await getCertificateARN(route53ZoneName, subdomainPrefix.length >= 1)
     const stackStatus = await getCFStackStatus(cfStackName)

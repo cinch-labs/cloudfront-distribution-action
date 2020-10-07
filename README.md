@@ -27,6 +27,14 @@ This is the name given to your CloudFormation stack when it's created.
 
 The stack name is an identifier that helps you find a particular stack from a list of stacks. A stack name can contain only alphanumeric characters (case-sensitive) and hyphens. It must start with an alphabetic character and can't be longer than 128 characters.
 
+### `lambda-stack-name`
+
+_deprecated: please use viewer-request-lambda-stack-name instead_
+
+**Required**: `false`
+
+This is the name of the lambda@edge that sits in front of your CloudFront distribution and handles requests. This is not required if you don't need URL rewrites or basic authentication.
+
 ### `viewer-request-lambda-stack-name`
 
 **Required**: `false`
