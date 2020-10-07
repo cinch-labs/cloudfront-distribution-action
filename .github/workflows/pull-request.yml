@@ -70,7 +70,7 @@ jobs:
         uses: ./
         with:
           cloudformation-stack-name: ${{ steps.generate-stack-name.outputs.stackName }}
-          viewer-request-lambda-stack-name: ${{ env.VIEWER_REQUEST_LAMBDA_STACK_NAME }}
+          lambda-stack-name: ${{ env.VIEWER_REQUEST_LAMBDA_STACK_NAME }}
           origin-response-lambda-stack-name: ${{ env.ORIGIN_RESPONSE_LAMBDA_STACK_NAME }}
           route-53-zone-name: ${{ env.ROUTE_53_ZONE_NAME }}
           s3-bucket-name: ${{ env.BUCKET_NAME }}
