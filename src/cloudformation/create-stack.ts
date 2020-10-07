@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import { CloudFormation } from 'aws-sdk'
 
-import { loadYaml } from '../utils'
+import { loadYaml, getArrayFromCommaString } from '../utils'
 
 type CreateStack = (
   region: string,
@@ -13,7 +13,9 @@ type CreateStack = (
   route53ZoneID: string,
   certificateARN: string,
   oaiARN: string,
-  fullDomain: string,
+  webAclId: string,
+  aRecordName: string,
+  cloudFrontAliases: string,
 ) => Promise<void>
 
 const createStack: CreateStack = async (
@@ -26,7 +28,9 @@ const createStack: CreateStack = async (
   route53ZoneID,
   certificateARN,
   oaiARN,
-  fullDomain,
+  webAclId,
+  aRecordName,
+  cloudFrontAliases,
 ) => {
   try {
     const cloudFormation = new CloudFormation({ region: region })
@@ -45,7 +49,9 @@ const createStack: CreateStack = async (
         { ParameterKey: 'WebsiteCloudFrontViewerRequestLambdaFunctionARN', ParameterValue: viewerRequestLambdaARN },
         { ParameterKey: 'WebsiteCloudFrontOriginResponseLambdaFunctionARN', ParameterValue: originResponseLambdaARN },
         { ParameterKey: 'OriginAccessIdentityARN', ParameterValue: oaiARN },
-        { ParameterKey: 'CloudFrontAlias', ParameterValue: fullDomain },
+        { ParameterKey: 'WebACLId', ParameterValue: webAclId },
+        { ParameterKey: 'CloudFrontAliases', ParameterValue: cloudFrontAliases },
+        { ParameterKey: 'ARecordName', ParameterValue: aRecordName },
       ],
       TemplateBody: templateBody,
     }
@@ -65,7 +71,9 @@ const createStack: CreateStack = async (
       core.info(`Completed stack creation for '${stackName}'`)
     }
 
-    core.setOutput('url', `https://${fullDomain}`)
+    const outputURL = `https://${getArrayFromCommaString(cloudFrontAliases)[0]}`
+
+    core.setOutput('url', outputURL)
   } catch (error) {
     core.setFailed(error)
   }

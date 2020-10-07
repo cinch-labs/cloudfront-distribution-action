@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 
 import { Input } from './types'
 
-import { checkInputContent, getFullDomain } from './utils'
+import { checkInputContent } from './utils'
 import { getRoute53ZoneID } from './route-53'
 import { getOaiArn } from './s3'
 import { getCFStackStatus, waitForStack, getLambdaARN, createStack } from './cloudformation'
@@ -20,13 +20,16 @@ async function run(): Promise<void> {
     const s3BucketName = checkInputContent(core.getInput(Input.S3_BUCKET_NAME), Input.S3_BUCKET_NAME)
     const subdirectoryName = checkInputContent(core.getInput(Input.SUBDIRECTORY_NAME), Input.SUBDIRECTORY_NAME)
     const awsRegion = checkInputContent(core.getInput(Input.AWS_REGION), Input.AWS_REGION)
-    const subdomainPrefix = core.getInput(Input.SUBDOMAIN_PREFIX)
+    const webAclId = core.getInput(Input.WEB_ACL_ID)
+    const certificateName = core.getInput(Input.CERTIFICATE_NAME)
+    const aRecordName = core.getInput(Input.A_RECORD_NAME)
+    const cloudFrontAliases = core.getInput(Input.CLOUDFRONT_ALIASES)
 
     const route53ZoneID = await getRoute53ZoneID(route53ZoneName)
     const oaiArn = await getOaiArn(s3BucketName)
     const viewerRequestLambdaARN = await getLambdaARN(viewerRequestLambdaStackName)
     const originResponseLambdaARN = await getLambdaARN(originResponseLambdaStackName)
-    const certificateARN = await getCertificateARN(route53ZoneName, subdomainPrefix.length >= 1)
+    const certificateARN = await getCertificateARN(certificateName)
     const stackStatus = await getCFStackStatus(cfStackName)
 
     await waitForStack(stackStatus!, cfStackName)
@@ -41,7 +44,9 @@ async function run(): Promise<void> {
       route53ZoneID!,
       certificateARN!,
       oaiArn!,
-      getFullDomain(subdomainPrefix, route53ZoneName),
+      webAclId!,
+      aRecordName,
+      cloudFrontAliases,
     )
   } catch (error) {
     core.setFailed(error.message)

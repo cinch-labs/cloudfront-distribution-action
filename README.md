@@ -27,6 +27,18 @@ This is the name given to your CloudFormation stack when it's created.
 
 The stack name is an identifier that helps you find a particular stack from a list of stacks. A stack name can contain only alphanumeric characters (case-sensitive) and hyphens. It must start with an alphabetic character and can't be longer than 128 characters.
 
+### `cloudfront-aliases`
+
+**Required**: `true`
+
+A comma separated list of the aliases to associate with the cloudfront distribution. The first item in the list will be used as the output of the action.
+
+### `a-record-name`
+
+**Required**: `false`
+
+The name of the A record to be created if required.
+
 ### `lambda-stack-name`
 
 _deprecated: please use viewer-request-lambda-stack-name instead_
@@ -76,6 +88,18 @@ This is the AWS region used when creating your CloudFormation stack. It must be 
 **Required**: `false`
 
 This is required if your deployment requires prefixing your Route53 zone with a subdomain. If you specify this, your SSL certificate will have a wildcard prefix.
+
+### `certificate-name`
+
+**Required**: `false`
+
+This is required if your deployment requires manually specifying a certificate name. Should not be needed in most cases.
+
+### `web-acl-id`
+
+**Required**: `false`
+
+The Web ACL ID - see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-webaclid for full information on this parameter.
 
 ## Development
 
