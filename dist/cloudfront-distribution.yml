@@ -56,7 +56,7 @@ Resources:
           TargetOriginId: s3origin
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
-          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # Managed-CachingOptimised - enables Brotli compression
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # Managed-CachingOptimized - enables Brotli compression
           MinTTL: 0
           DefaultTTL: 300
           MaxTTL: 2419200
@@ -108,7 +108,7 @@ Resources:
           TargetOriginId: s3origin
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
-          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # Managed-CachingOptimised - enables Brotli compression
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # Managed-CachingOptimized - enables Brotli compression
           MinTTL: 0
           DefaultTTL: 300
           MaxTTL: 300
