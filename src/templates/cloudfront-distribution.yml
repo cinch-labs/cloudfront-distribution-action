@@ -32,6 +32,10 @@ Parameters:
     Type: String
     Description: Name given to the A record
     Default: ''
+  ManagedCachingOptimizedCachePolicyId:
+    Type: String
+    Description: The ID of the Managed-CachingOptimized cache policy, for enabling Brotli compression
+    Deafult: 658327ea-f89d-4fab-a63d-7e88639e58f6
 
 Conditions:
   HasLambdaARN: !Not [!Equals [!Ref WebsiteCloudFrontViewerRequestLambdaFunctionARN, '']]
@@ -56,6 +60,7 @@ Resources:
           TargetOriginId: s3origin
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
+          CachePolicyId: !Ref 'ManagedCachingOptimizedCachePolicyId'
           MinTTL: 0
           DefaultTTL: 300
           MaxTTL: 2419200
@@ -107,6 +112,7 @@ Resources:
           TargetOriginId: s3origin
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
+          CachePolicyId: !Ref 'ManagedCachingOptimizedCachePolicyId'
           MinTTL: 0
           DefaultTTL: 300
           MaxTTL: 300
