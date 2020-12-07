@@ -35,7 +35,7 @@ Parameters:
   ManagedCachingOptimizedCachePolicyId:
     Type: String
     Description: The ID of the Managed-CachingOptimized cache policy, for enabling Brotli compression
-    Deafult: 658327ea-f89d-4fab-a63d-7e88639e58f6
+    Default: 658327ea-f89d-4fab-a63d-7e88639e58f6
 
 Conditions:
   HasLambdaARN: !Not [!Equals [!Ref WebsiteCloudFrontViewerRequestLambdaFunctionARN, '']]
