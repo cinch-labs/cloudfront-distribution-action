@@ -8,7 +8,8 @@ type CreateStack = (
   stackName: string,
   bucketName: string,
   subdirectoryName: string,
-  lambdaARN: string,
+  viewerRequestLambdaARN: string,
+  originResponseLambdaARN: string,
   route53ZoneID: string,
   certificateARN: string,
   oaiARN: string,
@@ -22,7 +23,8 @@ const createStack: CreateStack = async (
   stackName,
   bucketName,
   subdirectoryName,
-  lambdaARN,
+  viewerRequestLambdaARN,
+  originResponseLambdaARN,
   route53ZoneID,
   certificateARN,
   oaiARN,
@@ -33,7 +35,7 @@ const createStack: CreateStack = async (
   try {
     const cloudFormation = new CloudFormation({ region: region })
 
-    const templateBody = loadYaml('/cloudfront-distribution.yml')
+    const templateBody = loadYaml('/cloudfront-distribution.json')
     const stackNameWithTimestamp = `${stackName}-${Math.floor(Date.now() / 1000)}`
 
     const parameters: CloudFormation.Types.CreateStackInput = {
@@ -44,7 +46,8 @@ const createStack: CreateStack = async (
         { ParameterKey: 'SubdirectoryName', ParameterValue: subdirectoryName },
         { ParameterKey: 'Route53ZoneId', ParameterValue: route53ZoneID },
         { ParameterKey: 'CertificateARN', ParameterValue: certificateARN },
-        { ParameterKey: 'WebsiteCloudFrontViewerRequestLambdaFunctionARN', ParameterValue: lambdaARN },
+        { ParameterKey: 'WebsiteCloudFrontViewerRequestLambdaFunctionARN', ParameterValue: viewerRequestLambdaARN },
+        { ParameterKey: 'WebsiteCloudFrontOriginResponseLambdaFunctionARN', ParameterValue: originResponseLambdaARN },
         { ParameterKey: 'OriginAccessIdentityARN', ParameterValue: oaiARN },
         { ParameterKey: 'WebACLId', ParameterValue: webAclId },
         { ParameterKey: 'CloudFrontAliases', ParameterValue: cloudFrontAliases },

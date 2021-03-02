@@ -17,6 +17,15 @@ inputs:
     required: false
     description: 'The stack name of the rewrite/auth lambda for the deployment'
     default: ''
+    deprecationMessage: 'This field is deprecated, please use viewer-request-lambda-stack-name instead'
+  viewer-request-lambda-stack-name:
+    required: false
+    description: 'The stack name of the viewer request lambda for the deployment'
+    default: ''
+  origin-response-lambda-stack-name:
+    required: false
+    description: 'The stack name of the origin response lambda for the deployment'
+    default: ''
   route-53-zone-name:
     required: true
     description: 'The Route 53 zone name for the deployment'

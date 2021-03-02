@@ -90,6 +90,6 @@ describe('getLambdaARN', () => {
     const expectedResult = ''
 
     expect(actualResult).toEqual(expectedResult)
-    expect(core.info).toBeCalledWith('No rewrite/auth lambda specified. Continuing without...')
+    expect(core.info).toBeCalledWith('No lambda specified. Continuing without...')
   })
 })
