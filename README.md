@@ -106,13 +106,13 @@ The Web ACL ID - see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGu
 Install the dependencies
 
 ```bash
-$ npm install
+$ yarn
 ```
 
 Build and package the action for distribution
 
 ```bash
-$ npm run build && npm run package
+$ yarn build && yarn package
 ```
 
 ## Publish
@@ -126,8 +126,8 @@ uses: cinch-labs/cloudfront-distribution-action@your-branch-name
 2. When you have finished your work, compile the action for release\* and push those changes:
 
 ```bash
-  npm run build
-  npm run package
+  yarn build
+  yarn package
 ```
 
 <sub>\* These two commands are also run automatically as a git pre-commit hook</sub>
