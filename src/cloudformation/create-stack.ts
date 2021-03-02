@@ -35,7 +35,7 @@ const createStack: CreateStack = async (
   try {
     const cloudFormation = new CloudFormation({ region: region })
 
-    const templateBody = loadYaml('/cloudfront-distribution.yml')
+    const templateBody = loadYaml('/cloudfront-distribution.json')
     const stackNameWithTimestamp = `${stackName}-${Math.floor(Date.now() / 1000)}`
 
     const parameters: CloudFormation.Types.CreateStackInput = {
