@@ -1,5 +1,7 @@
 # Cloudfront distribution action
 
+**THIS REPO IS NOW DEPRECATED IN FAVOUR OF DEPLOYING THE CINCH FRONTEND WITHIN THE FRONTENDS REPO [HERE](https://github.com/cinch-labs/front-ends/tree/master/packages/apps/cdk)**
+
 Creates a CloudFront distribution that points to a subdirectory of an S3 bucket.
 
 ## Usage
